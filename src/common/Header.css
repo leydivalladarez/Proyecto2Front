@@ -1,0 +1,9 @@
+/* Asegúrate de que el Header tenga un ancho completo y se mantenga en la parte superior */
+header {
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000; /* Asegúrate de que esté por encima de otros elementos */
+  }
+  
