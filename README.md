@@ -1,3 +1,25 @@
+# ✨Proyecto de Aplicaciones Distribuidas
+## 🛠️Herramientas y tecnologías
+- React ^18.3.1
+- Todas las dependencias se encuentran en package.json
+- Backend API Rest Java [Clic aquí para abrir Repositorio](https://github.com/leydivalladarez/Proyecto2Back)
+
+## 🏁 Iniciar
+- Clonar el presente repositorio
+- Instalar las dependencias con `npm` `yarn` o `pnpm`, Ejemplo con npm:
+```bash
+npm install
+```
+- Con el anterior comando se habrá creado la carpeta `node_modules` con las diferentes dependencias.
+- Iniciar el proyecto con `npm start`, si todo ha sido correcto se iniciará en `http://localhost:3000`
+## 👩🏽‍💻👩🏻‍💻👨🏻‍💻👨🏻‍💻Contribuidores
+<a href="https://github.com/leydivalladarez/Proyecto2Front/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=leydivalladarez/Proyecto2Front" alt="Contributos" />
+</a>
+
+---
+Documentación React 
+---
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
