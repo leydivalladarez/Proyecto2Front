@@ -2,6 +2,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./index.css";
 import InputMask from "react-input-mask";
+import { InputGroup } from "react-bootstrap";
 
 const CustomDatePicker = (props) => {
   const months = [
@@ -19,7 +20,7 @@ const CustomDatePicker = (props) => {
     "Diciembre"
   ];
   return (
-    <>
+    <InputGroup className="datepicker-group">
       <DatePicker
         customInput={<InputMask type="text" mask="99/99/9999" />}
         renderCustomHeader={({
@@ -89,7 +90,7 @@ const CustomDatePicker = (props) => {
         selected={props.selected}
         onChange={props.onChange}
       />
-    </>
+    </InputGroup>
   );
 };
 
