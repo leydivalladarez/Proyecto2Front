@@ -9,6 +9,7 @@ import CiudadForm from './Facturacion/Ciudad/CiudadForm';
 import FacturaList from './Facturacion/Factura/FacturaList';
 import FacturaForm from './Facturacion/Factura/FacturaForm';
 import VentaCiudades from './Facturacion/Reportes/VentasCiudades';
+import ClienteArticulo from './Facturacion/Reportes/ClienteArticulo';
 
 const AppRoutes = ({ isAuthenticated }) => {
   return (
@@ -39,6 +40,7 @@ const AppRoutes = ({ isAuthenticated }) => {
       <Route path="/facturacion/facturas/editar/:id" element={<FacturaForm />} />
 
       <Route path="/facturacion/reportes/ventas-totales-ciudades" element={<VentaCiudades />} />
+      <Route path="/facturacion/reportes/ventas-cruzadas" element={<ClienteArticulo />} />
 
       <Route path="/" element={<Navigate to="/login" />} />
     </Routes>

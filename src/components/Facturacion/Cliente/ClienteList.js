@@ -19,7 +19,7 @@ const ClienteList = () => {
     <Layout onLogout={handleLogout}>
       <Row className=''>
         <Col className='d-flex justify-content-end'>
-          <Button variant="success" onClick={() => navigate('/clientes/agregar')}>
+          <Button variant="success" onClick={() => navigate('/facturacion/clientes/agregar')}>
             <FontAwesomeIcon icon={faAdd} /> Agregar
           </Button>
         </Col>

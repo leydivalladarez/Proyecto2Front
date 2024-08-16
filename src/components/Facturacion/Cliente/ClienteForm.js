@@ -44,7 +44,7 @@ const ClienteForm = () => {
     request
       .then(() => {
         setLoading(false);
-        navigate('/clientes');
+        navigate('/facturacion/clientes');
       })
       .catch(error => {
         setError(error);
@@ -63,6 +63,8 @@ const ClienteForm = () => {
           <Form.Control 
             type="text" 
             name="ruc"
+            maxLength={13}
+            minLength={10}
             value={cliente.ruc}
             onChange={handleChange}
             placeholder="Ingrese el RUC"

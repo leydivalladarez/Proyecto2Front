@@ -19,7 +19,7 @@ const CiudadList = () => {
     <Layout onLogout={handleLogout}>
       <Row className=''>
         <Col className='d-flex justify-content-end'>
-          <Button variant="success" onClick={() => navigate('/ciudades/agregar')}>
+          <Button variant="success" onClick={() => navigate('/facturacion/ciudades/agregar')}>
             <FontAwesomeIcon icon={faAdd} /> Agregar
           </Button>
         </Col>

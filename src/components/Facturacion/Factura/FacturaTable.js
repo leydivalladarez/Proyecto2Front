@@ -74,12 +74,12 @@ const FacturaTable = () => {
         <tbody>
           {facturas.map(factura => (
             <tr key={factura.id}>
-              <td><Link to={`/facturas/editar/${factura.id}`}>{formatInvoiceNumber(factura.id)}</Link></td>
+              <td><Link to={`/facturacion/facturas/editar/${factura.id}`}>{formatInvoiceNumber(factura.id)}</Link></td>
               <td>{factura.fecha}</td>
               <td>{factura.cliente.nombre}</td>
               <td>{factura.ciudad.nombre}</td>
               <td className='d-flex justify-content-center'>
-                <Button className='mx-1' variant="primary" onClick={() => navigate(`/facturas/editar/${factura.id}`)}>
+                <Button className='mx-1' variant="primary" onClick={() => navigate(`/facturacion/facturas/editar/${factura.id}`)}>
                   <FontAwesomeIcon icon={faPencil} />
                 </Button>
                 <Button className='mx-1' variant="danger" onClick={() => handleShowModal(factura)}>

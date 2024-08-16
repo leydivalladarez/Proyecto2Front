@@ -48,16 +48,19 @@ const Table = () => {
       <table className="table table-striped">
         <thead>
           <tr>
-            <th>Código</th>
-            <th>Nombre</th>
-            <th>Ventas Totales</th>
+            <th>Artículo\Cliente</th>
+            {clientes.map(cliente => (
+              <th>{cliente.nombre}</th>
+            ))}
           </tr>
         </thead>
         <tbody>
           {articulos.map(articulo => (
             <tr key={articulo.codigoArticulo}>
               <td>{articulo.nombreArticulo}</td>
-              {/* <td>{ciudad.ventasTotales ? ciudad.ventasTotales.toFixed(2) : '0.00'}</td>               */}
+              {clientes.map(cliente => (
+                <td>{(articulo.ventasPorCliente[cliente.id] ?? 0).toFixed(2)}</td>
+              )) }
             </tr>
           ))}
         </tbody>

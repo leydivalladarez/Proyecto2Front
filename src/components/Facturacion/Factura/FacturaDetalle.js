@@ -135,6 +135,7 @@ const FacturaDetalle = ({ facturaDetalles = [], setFacturaDetalles }) => {
               <td>
                 <Form.Control
                   type="number"
+                  min="0"
                   step="0.01"
                   value={detalle.precio ? detalle.precio.toFixed(2): ''}
                   onChange={(e) =>
@@ -190,8 +191,9 @@ const FacturaDetalle = ({ facturaDetalles = [], setFacturaDetalles }) => {
             <td>
               <Form.Control
                 type="number"
+                min="0"
                 step="0.01"
-                value={detalleNuevo.precio}
+                value={detalleNuevo.precio ? detalleNuevo.precio.toFixed(2) : ''}
                 onChange={(e) =>
                   setDetalleNuevo({
                     ...detalleNuevo,
@@ -205,7 +207,7 @@ const FacturaDetalle = ({ facturaDetalles = [], setFacturaDetalles }) => {
                 className='text-end'
                 type="number"
                 step="0.01"
-                value={detalleNuevo.precioTotal = detalleNuevo.cantidad * detalleNuevo.precio}
+                value={(detalleNuevo.precioTotal = detalleNuevo.cantidad * detalleNuevo.precio).toFixed(2)}
                 readOnly
               />
             </td>

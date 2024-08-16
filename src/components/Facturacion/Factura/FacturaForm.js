@@ -112,7 +112,7 @@ const FacturaForm = () => {
     request
       .then(() => {
         setLoading(false);
-        navigate("/facturas");
+        navigate("/facturacion/facturas");
       })
       .catch((error) => {
         setError(error);

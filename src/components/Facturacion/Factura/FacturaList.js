@@ -19,7 +19,7 @@ const FacturaList = () => {
     <Layout onLogout={handleLogout}>
       <Row className=''>
         <Col className='d-flex justify-content-end'>
-          <Button variant="success" onClick={() => navigate('/facturas/agregar')}>
+          <Button variant="success" onClick={() => navigate('/facturacion/facturas/agregar')}>
             <FontAwesomeIcon icon={faAdd} /> Agregar
           </Button>
         </Col>

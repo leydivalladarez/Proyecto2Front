@@ -92,6 +92,7 @@ const Sidebar = () => {
                     </button>
                     <div className={`collapse ${activeMenu === 'invoices-report-collapse' ? 'show' : ''}`} id="invoices-report-collapse">
                       <li><NavLink to="/facturacion/reportes/ventas-totales-ciudades" className="link-body-emphasis d-inline-flex text-decoration-none rounded">Ventas Totales por Ciudad</NavLink></li>
+                      <li><NavLink to="/facturacion/reportes/ventas-cruzadas" className="link-body-emphasis d-inline-flex text-decoration-none rounded">Ventas Cruzadas</NavLink></li>
                     </div>
                   </li>
                 </ul>

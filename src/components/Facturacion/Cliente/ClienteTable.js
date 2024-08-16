@@ -78,7 +78,7 @@ const ClienteTable = () => {
               <td>{cliente.nombre}</td>
               <td>{cliente.direccion}</td>
               <td className='d-flex justify-content-center'>
-                <Button className='mx-1' variant="primary" onClick={() => navigate(`/clientes/editar/${cliente.id}`)}>
+                <Button className='mx-1' variant="primary" onClick={() => navigate(`/facturacion/clientes/editar/${cliente.id}`)}>
                   <FontAwesomeIcon icon={faPencil} />
                 </Button>
                 <Button className='mx-1' variant="danger" onClick={() => handleShowModal(cliente)}>

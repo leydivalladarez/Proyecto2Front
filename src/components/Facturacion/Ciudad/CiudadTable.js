@@ -74,7 +74,7 @@ const CiudadTable = () => {
               <td>{ciudad.codigo}</td>
               <td>{ciudad.nombre}</td>
               <td className='d-flex justify-content-center'>
-                <Button className='mx-1' variant="primary" onClick={() => navigate(`/ciudades/editar/${ciudad.codigo}`)}>
+                <Button className='mx-1' variant="primary" onClick={() => navigate(`/facturacion/ciudades/editar/${ciudad.codigo}`)}>
                   <FontAwesomeIcon icon={faPencil} />
                 </Button>
                 <Button className='mx-1' variant="danger" onClick={() => handleShowModal(ciudad)}>

@@ -44,7 +44,7 @@ const CiudadForm = () => {
     request
       .then(() => {
         setLoading(false);
-        navigate('/ciudades');
+        navigate('/facturacion/ciudades');
       })
       .catch(error => {
         setError(error);
