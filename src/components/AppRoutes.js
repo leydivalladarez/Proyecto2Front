@@ -2,13 +2,13 @@ import React from 'react';
 import { Route, Routes, Navigate } from 'react-router-dom';
 import Login from './Login';
 import Dashboard from './Dashboard';
-import ClienteTable from './Cliente/ClienteTable';
-import ClienteList from './Cliente/ClienteList';
-import ClienteForm from './Cliente/ClienteForm';
-import CiudadList from './Ciudad/CiudadList';
-import CiudadForm from './Ciudad/CiudadForm';
-import FacturaList from './Factura/FacturaList';
-import FacturaForm from './Factura/FacturaForm';
+import ClienteList from './Facturacion/Cliente/ClienteList';
+import ClienteForm from './Facturacion/Cliente/ClienteForm';
+import CiudadList from './Facturacion/Ciudad/CiudadList';
+import CiudadForm from './Facturacion/Ciudad/CiudadForm';
+import FacturaList from './Facturacion/Factura/FacturaList';
+import FacturaForm from './Facturacion/Factura/FacturaForm';
+import VentaCiudades from './Facturacion/Reportes/VentasCiudades';
 
 const AppRoutes = ({ isAuthenticated }) => {
   return (
@@ -26,17 +26,19 @@ const AppRoutes = ({ isAuthenticated }) => {
         path="/clientes"
         element={isAuthenticated ? <ClienteTable /> : <Navigate to="/login" />}
       /> */}
-      <Route path="/clientes" element={<ClienteList />} />
-      <Route path="/clientes/agregar" element={<ClienteForm />} />
-      <Route path="/clientes/editar/:id" element={<ClienteForm />} />
+      <Route path="/facturacion/clientes" element={<ClienteList />} />
+      <Route path="/facturacion/clientes/agregar" element={<ClienteForm />} />
+      <Route path="/facturacion/clientes/editar/:id" element={<ClienteForm />} />
 
-      <Route path="/ciudades" element={<CiudadList />} />
-      <Route path="/ciudades/agregar" element={<CiudadForm />} />
-      <Route path="/ciudades/editar/:codigo" element={<CiudadForm />} />
+      <Route path="/facturacion/ciudades" element={<CiudadList />} />
+      <Route path="/facturacion/ciudades/agregar" element={<CiudadForm />} />
+      <Route path="/facturacion/ciudades/editar/:codigo" element={<CiudadForm />} />
 
-      <Route path="/facturas" element={<FacturaList />} />
-      <Route path="/facturas/agregar" element={<FacturaForm />} />
-      <Route path="/facturas/editar/:id" element={<FacturaForm />} />
+      <Route path="/facturacion/facturas" element={<FacturaList />} />
+      <Route path="/facturacion/facturas/agregar" element={<FacturaForm />} />
+      <Route path="/facturacion/facturas/editar/:id" element={<FacturaForm />} />
+
+      <Route path="/facturacion/reportes/ventas-totales-ciudades" element={<VentaCiudades />} />
 
       <Route path="/" element={<Navigate to="/login" />} />
     </Routes>

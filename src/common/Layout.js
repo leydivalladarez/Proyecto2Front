@@ -8,7 +8,7 @@ const Layout = ({ children, onLogout }) => {
       <Header onLogout={onLogout} />
       <div className="d-flex flex-grow-1">
         <Sidebar />
-        <main className="flex-grow-1 p-4">
+        <main className="flex-grow-1 p-4" style={{ overflowY: 'auto' }}>
           {children}
         </main>
       </div>

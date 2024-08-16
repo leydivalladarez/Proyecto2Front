@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import Layout from '../../common/Layout';
+import Layout from '../../../common/Layout';
 import CiudadTable from './CiudadTable';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button, Col, Row } from 'react-bootstrap';

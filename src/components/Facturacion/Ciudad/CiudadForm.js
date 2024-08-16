@@ -2,21 +2,21 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Button, Form } from 'react-bootstrap';
 import axios from 'axios';
-import Layout from '../../common/Layout';
+import Layout from '../../../common/Layout';
 
-const ClienteForm = () => {
-  const [cliente, setCliente] = useState({ ruc: '', nombre: '', direccion: '' });
+const CiudadForm = () => {
+  const [ciudad, setCiudad] = useState({ codigo: '', nombre: '' });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-  const { id } = useParams();
+  const { codigo } = useParams();
 
   useEffect(() => {
-    if (id) {
+    if (codigo) {
       setLoading(true);
-      axios.get(`http://localhost:8080/api/v1/clientes/${id}`)
+      axios.get(`http://localhost:8080/api/v1/ciudades/${codigo}`)
         .then(response => {
-          setCliente(response.data);
+          setCiudad(response.data);
           setLoading(false);
         })
         .catch(error => {
@@ -24,11 +24,11 @@ const ClienteForm = () => {
           setLoading(false);
         });
     }
-  }, [id]);
+  }, [codigo]);
 
   const handleChange = (e) => {
-    setCliente({
-      ...cliente,
+    setCiudad({
+      ...ciudad,
       [e.target.name]: e.target.value
     });
   };
@@ -37,14 +37,14 @@ const ClienteForm = () => {
     e.preventDefault();
     setLoading(true);
 
-    const request = id 
-      ? axios.put(`http://localhost:8080/api/v1/clientes/${id}`, cliente)
-      : axios.post('http://localhost:8080/api/v1/clientes', cliente);
+    const request = codigo 
+      ? axios.put(`http://localhost:8080/api/v1/ciudades/${codigo}`, ciudad)
+      : axios.post('http://localhost:8080/api/v1/ciudades', ciudad);
 
     request
       .then(() => {
         setLoading(false);
-        navigate('/clientes');
+        navigate('/ciudades');
       })
       .catch(error => {
         setError(error);
@@ -58,45 +58,23 @@ const ClienteForm = () => {
       navigate('/login');
     }}>
       <Form onSubmit={handleSubmit}>
-        <Form.Group controlId="formRUC">
-          <Form.Label>RUC</Form.Label>
-          <Form.Control 
-            type="text" 
-            name="ruc"
-            value={cliente.ruc}
-            onChange={handleChange}
-            placeholder="Ingrese el RUC"
-            required
-          />
-        </Form.Group>
         <Form.Group controlId="formNombre">
           <Form.Label>Nombre</Form.Label>
           <Form.Control 
             type="text" 
             name="nombre"
-            value={cliente.nombre}
+            value={ciudad.nombre}
             onChange={handleChange}
             placeholder="Ingrese el nombre"
             required
           />
-        </Form.Group>
-        <Form.Group controlId="formDireccion">
-          <Form.Label>Dirección</Form.Label>
-          <Form.Control 
-            type="text" 
-            name="direccion"
-            value={cliente.direccion}
-            onChange={handleChange}
-            placeholder="Ingrese la dirección"
-            required
-          />
-        </Form.Group>
+        </Form.Group>        
         <Button variant="primary" type="submit" className="mt-3">
-          {id ? 'Actualizar' : 'Agregar'}
+          {codigo ? 'Actualizar' : 'Agregar'}
         </Button>
       </Form>
     </Layout>
   );
 };
 
-export default ClienteForm;
+export default CiudadForm;

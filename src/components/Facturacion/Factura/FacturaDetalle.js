@@ -57,24 +57,24 @@ const FacturaDetalle = ({ facturaDetalles = [], setFacturaDetalles }) => {
 
   const handleDetalleChange = (index, campo, valor) => {
     const nuevosDetalles = [...facturaDetalles];
-    console.table([index, campo, valor]);
-
-    nuevosDetalles[index][campo] = valor;
 
     if (campo === 'articuloId') {
       const articulo = articulos.find((a) => a.codigo.toString() === valor);
       if (articulo) {
-        console.log(articulo);
+        nuevosDetalles[index].articulo = articulo;
         nuevosDetalles[index].precio = articulo.precio;
-      }else{
+        nuevosDetalles[index].precioTotal = articulo.precio * nuevosDetalles[index].cantidad;
+      } else {
         nuevosDetalles[index].precio = '';
         nuevosDetalles[index].precioTotal = '';
       }
-    }
+    } else {
+      nuevosDetalles[index][campo] = valor;
 
-    if (campo === 'cantidad' || campo === 'precio' || (campo === 'articuloId' && valor !== '')) {
-      nuevosDetalles[index].precioTotal =
-        nuevosDetalles[index].cantidad * nuevosDetalles[index].precio;
+      if (campo === 'cantidad' || campo === 'precio') {
+        nuevosDetalles[index].precioTotal =
+          nuevosDetalles[index].cantidad * nuevosDetalles[index].precio;
+      }
     }
 
     setFacturaDetalles(nuevosDetalles);
@@ -136,7 +136,7 @@ const FacturaDetalle = ({ facturaDetalles = [], setFacturaDetalles }) => {
                 <Form.Control
                   type="number"
                   step="0.01"
-                  value={detalle.precio.toFixed(2)}
+                  value={detalle.precio ? detalle.precio.toFixed(2): ''}
                   onChange={(e) =>
                     handleDetalleChange(index, 'precio', Number(e.target.value))
                   }
@@ -147,7 +147,7 @@ const FacturaDetalle = ({ facturaDetalles = [], setFacturaDetalles }) => {
                   className='text-end'
                   type="number"
                   step="0.01"
-                  value={detalle.precioTotal.toFixed(2)}
+                  value={detalle.precioTotal ? detalle.precioTotal.toFixed(2) : ''}
                   readOnly
                 />
               </td>
@@ -218,7 +218,7 @@ const FacturaDetalle = ({ facturaDetalles = [], setFacturaDetalles }) => {
           <tr>
             <td colSpan={2}></td>
             <td className='text-end'>Total</td>
-            <td className='text-end'>{subtotal}</td>
+            <td className='text-end'>{subtotal ? subtotal.toFixed(2) : ''}</td>
           </tr>
         </tbody>
       </Table>

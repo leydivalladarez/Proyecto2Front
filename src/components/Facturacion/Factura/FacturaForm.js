@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Button, Col, Form, FormControl, Row } from "react-bootstrap";
+import { Button, Col, Form, Row } from "react-bootstrap";
 import axios from "axios";
-import Layout from "../../common/Layout";
-import CustomDatePicker from "../../common/Custom-Datepicker";
+import Layout from "../../../common/Layout";
+import CustomDatePicker from "../../../common/Custom-Datepicker";
 import FacturaDetalle from "./FacturaDetalle";
 
 const FacturaForm = () => {
@@ -80,9 +80,16 @@ const FacturaForm = () => {
   }, [id]);
 
   const handleChange = (e) => {
+    let valor = e.target.value;
+    if(e.target.name === 'ciudad'){
+      valor = {codigo: e.target.value};
+    }else if( e.target.name === 'cliente' ){
+      valor = {id: e.target.value};
+    }
+    
     setFactura({
       ...factura,
-      [e.target.name]: e.target.value,
+      [e.target.name]: valor,
     });
   };
 
@@ -95,6 +102,8 @@ const FacturaForm = () => {
     if (datepick) {
       facturaData.fecha = datepick.toISOString().split("T")[0];
     }
+    console.log(facturaData);
+    
 
     const request = id
       ? axios.put(`http://localhost:8080/api/v1/facturas/${id}`, facturaData)

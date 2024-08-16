@@ -9,7 +9,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   const isAuthenticated = localStorage.getItem('token'); // Verifica si el usuario está autenticado
-
   return (
     <Router>
       <div>

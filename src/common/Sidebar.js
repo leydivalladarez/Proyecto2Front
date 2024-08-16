@@ -16,8 +16,12 @@ const Sidebar = () => {
       setActiveMenu('dashboard-collapse');
     } else if (path.startsWith('/new') || path.startsWith('/processed') || path.startsWith('/shipped')) {
       setActiveMenu('orders-collapse');
-    } else if (path.startsWith('/clientes') || path.startsWith('/ciudades') || path.startsWith('/facturas')) {
+    } else if (path.startsWith('/facturacion')) {
       setActiveMenu('invoices-collapse');
+      if(path.startsWith('/facturacion/reportes')){
+        // setActiveMenu('invoices-collapse');
+        setActiveMenu('invoices-report-collapse');
+      }
     } else if (path.startsWith('/profile') || path.startsWith('/settings')) {
       setActiveMenu('account-collapse');
     } else {
@@ -56,7 +60,7 @@ const Sidebar = () => {
                   <li><NavLink to="/overview" className="link-body-emphasis d-inline-flex text-decoration-none rounded">Overview</NavLink></li>
                   <li><NavLink to="/weekly" className="link-body-emphasis d-inline-flex text-decoration-none rounded">Weekly</NavLink></li>
                   <li><NavLink to="/monthly" className="link-body-emphasis d-inline-flex text-decoration-none rounded">Monthly</NavLink></li>
-                  <li><NavLink to="/annually" className="link-body-emphasis d-inline-flex text-decoration-none rounded">Annually</NavLink></li>
+                  <li><NavLink to="/annually" className="link-body-e  mphasis d-inline-flex text-decoration-none rounded">Annually</NavLink></li>
                 </ul>
               </div>
             </li>
@@ -74,16 +78,22 @@ const Sidebar = () => {
               </div>
             </li>
             <li className="mb-1">
-              <button className={`btn btn-toggle d-inline-flex align-items-center rounded border-0 ${activeMenu === 'invoices-collapse' ? '' : 'collapsed'}`} data-bs-toggle="collapse" data-bs-target="#invoices-collapse" aria-expanded={activeMenu === 'invoices-collapse'}>
+              <button className={`btn btn-toggle d-inline-flex align-items-center rounded border-0 ${activeMenu && activeMenu.startsWith('invoices-') ? '' : 'collapsed'}`} data-bs-toggle="collapse" data-bs-target="#invoices-collapse" aria-expanded={activeMenu && activeMenu.startsWith('invoices-')}>
                 Facturación
               </button>
-              <div className={`collapse ${activeMenu === 'invoices-collapse' ? 'show' : ''}`} id="invoices-collapse">
+              <div className={`collapse ${activeMenu && activeMenu.startsWith('invoices-') ? 'show' : ''}`} id="invoices-collapse">
                 <ul className="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                  <li><NavLink to="/clientes" className="link-body-emphasis d-inline-flex text-decoration-none rounded">Clientes</NavLink></li>
-                  <li><NavLink to="/ciudades" className="link-body-emphasis d-inline-flex text-decoration-none rounded">Ciudades</NavLink></li>
-                  <li><NavLink to="/facturas" className="link-body-emphasis d-inline-flex text-decoration-none rounded">Facturas</NavLink></li>
-                  <li><NavLink to="/shipped" className="link-body-emphasis d-inline-flex text-decoration-none rounded">Shipped</NavLink></li>
-                  <li><NavLink to="/returned" className="link-body-emphasis d-inline-flex text-decoration-none rounded">Returned</NavLink></li>
+                  <li><NavLink to="/facturacion/clientes" className="link-body-emphasis d-inline-flex text-decoration-none rounded">Clientes</NavLink></li>
+                  <li><NavLink to="/facturacion/ciudades" className="link-body-emphasis d-inline-flex text-decoration-none rounded">Ciudades</NavLink></li>
+                  <li><NavLink to="/facturacion/facturas" className="link-body-emphasis d-inline-flex text-decoration-none rounded">Facturas</NavLink></li>
+                  <li className="mb-1 ms-3">
+                    <button className={`btn btn-toggle d-inline-flex align-items-center rounded border-0 ${activeMenu === 'invoices-report-collapse' ? '' : 'collapsed'}`} data-bs-toggle="collapse" data-bs-target="#invoices-report-collapse" aria-expanded={activeMenu === 'invoices-report-collapse'}>
+                      Reportes
+                    </button>
+                    <div className={`collapse ${activeMenu === 'invoices-report-collapse' ? 'show' : ''}`} id="invoices-report-collapse">
+                      <li><NavLink to="/facturacion/reportes/ventas-totales-ciudades" className="link-body-emphasis d-inline-flex text-decoration-none rounded">Ventas Totales por Ciudad</NavLink></li>
+                    </div>
+                  </li>
                 </ul>
               </div>
             </li>
