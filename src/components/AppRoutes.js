@@ -10,6 +10,10 @@ import FacturaList from './Facturacion/Factura/FacturaList';
 import FacturaForm from './Facturacion/Factura/FacturaForm';
 import VentaCiudades from './Facturacion/Reportes/VentasCiudades';
 import ClienteArticulo from './Facturacion/Reportes/ClienteArticulo';
+import MotivoList from './Nomina/Motivo/MotivoList';
+import MotivoForm from './Nomina/Motivo/MotivoForm';
+import EmpleadoList from './Nomina/Empleado/EmpleadoList';
+import EmpleadoForm from './Nomina/Empleado/EmpleadoForm';
 
 const AppRoutes = ({ isAuthenticated }) => {
   return (
@@ -41,6 +45,15 @@ const AppRoutes = ({ isAuthenticated }) => {
 
       <Route path="/facturacion/reportes/ventas-totales-ciudades" element={<VentaCiudades />} />
       <Route path="/facturacion/reportes/ventas-cruzadas" element={<ClienteArticulo />} />
+
+      {/* Nómina */}
+      <Route path="/nomina/motivos" element={<MotivoList />} />
+      <Route path="/nomina/motivos/agregar" element={<MotivoForm />} />
+      <Route path="/nomina/motivos/editar/:codigo" element={<MotivoForm />} />
+
+      <Route path="/nomina/empleados" element={<EmpleadoList />} />
+      <Route path="/nomina/empleados/agregar" element={<EmpleadoForm />} />
+      <Route path="/nomina/empleados/editar/:id" element={<EmpleadoForm />} />
 
       <Route path="/" element={<Navigate to="/login" />} />
     </Routes>

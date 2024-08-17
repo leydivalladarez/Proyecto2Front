@@ -10,8 +10,8 @@ const Sidebar = () => {
   useEffect(() => {
     // Detectar qué submenú debe estar abierto basado en la ruta actual
     const path = location.pathname;
-    if (path.startsWith('/overview') || path.startsWith('/updates') || path.startsWith('/reports')) {
-      setActiveMenu('home-collapse');
+    if (path.startsWith('/nomina')) {
+      setActiveMenu('nomina-collapse');
     } else if (path.startsWith('/weekly') || path.startsWith('/monthly') || path.startsWith('/annually')) {
       setActiveMenu('dashboard-collapse');
     } else if (path.startsWith('/new') || path.startsWith('/processed') || path.startsWith('/shipped')) {
@@ -40,13 +40,13 @@ const Sidebar = () => {
       </a> */}
           <ul className="list-unstyled ps-0">
             <li className="mb-1">
-              <button className={`btn btn-toggle d-inline-flex align-items-center rounded border-0 ${activeMenu === 'home-collapse' ? '' : 'collapsed'}`} data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded={activeMenu === 'home-collapse'}>
+              <button className={`btn btn-toggle d-inline-flex align-items-center rounded border-0 ${activeMenu === 'nomina-collapse' ? '' : 'collapsed'}`} data-bs-toggle="collapse" data-bs-target="#nomina-collapse" aria-expanded={activeMenu === 'nomina-collapse'}>
                 Nómina
               </button>
-              <div className={`collapse ${activeMenu === 'home-collapse' ? 'show' : ''}`} id="home-collapse">
+              <div className={`collapse ${activeMenu === 'nomina-collapse' ? 'show' : ''}`} id="nomina-collapse">
                 <ul className="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                  <li><NavLink to="/overview" className="link-body-emphasis d-inline-flex text-decoration-none rounded">Overview</NavLink></li>
-                  <li><NavLink to="/updates" className="link-body-emphasis d-inline-flex text-decoration-none rounded">Updates</NavLink></li>
+                  <li><NavLink to="/nomina/motivos" className="link-body-emphasis d-inline-flex text-decoration-none rounded">Motivos</NavLink></li>
+                  <li><NavLink to="/nomina/empleados" className="link-body-emphasis d-inline-flex text-decoration-none rounded">Empleados</NavLink></li>
                   <li><NavLink to="/reports" className="link-body-emphasis d-inline-flex text-decoration-none rounded">Reports</NavLink></li>
                 </ul>
               </div>

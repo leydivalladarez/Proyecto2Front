@@ -3,3 +3,16 @@
     padding-left: 15px;
   }
   
+  [data-bs-theme=dark] .react-datepicker {
+    color: var(--bs-body-color);
+    background-color: var(--bs-body-bg);
+  }
+
+  [data-bs-theme=dark] .react-datepicker__header{
+    background-color: var(--bs-dark-bg);
+    color: var(--bs-light-text);
+  }
+
+  [data-bs-theme=dark] .react-datepicker__day, .react-datepicker__day-name {
+    color: var(--bs-light-text);
+  }
