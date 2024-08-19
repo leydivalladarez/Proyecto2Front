@@ -4,21 +4,20 @@ import { Button, Col, Form, Row } from "react-bootstrap";
 import axios from "axios";
 import Layout from "../../../common/Layout";
 import CustomDatePicker from "../../../common/Custom-Datepicker";
-import FacturaDetalle from "./FacturaDetalle";
+import NominaDetalle from "./NominaDetalle";
 
-const FacturaForm = () => {
-  const [factura, setFactura] = useState({
+const NominaForm = () => {
+  const [nomina, setNomina] = useState({
     fecha: "",
-    cliente: "",
-    ciudad: "",
+    empleado: "",
+    motivo: "",
   });
-  const [clientes, setClientes] = useState([]);
-  const [ciudades, setCiudades] = useState([]);
+  const [empleados, setEmpleados] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [datepick, setDatePick] = useState(new Date());
   const navigate = useNavigate();
-  const { id } = useParams();
+  const { numero } = useParams();
 
   // Función para crear una fecha local sin ajustar la zona horaria
   const createLocalDate = (dateString) => {
@@ -27,49 +26,34 @@ const FacturaForm = () => {
   };
 
   useEffect(() => {
-    // Cargar la lista de clientes
+    // Cargar la lista de empleados
     axios
-      .get("http://localhost:8080/api/v1/clientes")
+      .get("http://localhost:8080/api/v1/empleados")
       .then((response) => {
-        setClientes(response.data);
+        setEmpleados(response.data);
       })
       .catch((error) => {
         setError(error);
       });
 
-    // Cargar la lista de ciudades
-    axios
-      .get("http://localhost:8080/api/v1/ciudades")
-      .then((response) => {
-        setCiudades(response.data);
-      })
-      .catch((error) => {
-        setError(error);
-      });
-
-    if (id) {
+    if (numero) {
       setLoading(true);
       axios
-        .get(`http://localhost:8080/api/v1/facturas/${id}`)
+        .get(`http://localhost:8080/api/v1/nominas/${numero}`)
         .then((response) => {
           const data = response.data;
+          
           // Convertir la fecha de string a objeto Date
           if (data.fecha) {
             const dateObject = createLocalDate(data.fecha);
-            setFactura((prevFactura) => ({
-              ...prevFactura,
+            setNomina((prevNomina) => ({
+              ...prevNomina,
               fecha: dateObject,
             }));
             setDatePick(dateObject);
           }
 
-          //Agregar precioTotal a cada detalle
-          data.facturaDetalles.forEach((detalle, i) => {
-            detalle.precioTotal = detalle.cantidad * detalle.precio;
-            data.facturaDetalles[i] = detalle;            
-          });
-          console.table(data.facturaDetalles);
-          setFactura(data);
+          setNomina(data);
           setLoading(false);
         })
         .catch((error) => {
@@ -77,18 +61,18 @@ const FacturaForm = () => {
           setLoading(false);
         });
     }
-  }, [id]);
+  }, [numero]);
 
   const handleChange = (e) => {
     let valor = e.target.value;
-    if(e.target.name === 'ciudad'){
+    if(e.target.name === 'motivo'){
       valor = {codigo: e.target.value};
-    }else if( e.target.name === 'cliente' ){
+    }else if( e.target.name === 'empleado' ){
       valor = {id: e.target.value};
     }
     
-    setFactura({
-      ...factura,
+    setNomina({
+      ...nomina,
       [e.target.name]: valor,
     });
   };
@@ -98,21 +82,21 @@ const FacturaForm = () => {
     setLoading(true);
 
     // Convertir la fecha a 'YYYY-MM-DD'
-    const facturaData = { ...factura };
+    const nominaData = { ...nomina };
     if (datepick) {
-      facturaData.fecha = datepick.toISOString().split("T")[0];
+      nominaData.fecha = datepick.toISOString().split("T")[0];
     }
-    console.log(facturaData);
+    console.log(nominaData);
     
 
-    const request = id
-      ? axios.put(`http://localhost:8080/api/v1/facturas/${id}`, facturaData)
-      : axios.post("http://localhost:8080/api/v1/facturas", facturaData);
+    const request = numero
+      ? axios.put(`http://localhost:8080/api/v1/nominas/${numero}`, nominaData)
+      : axios.post("http://localhost:8080/api/v1/nominas", nominaData);
 
     request
       .then(() => {
         setLoading(false);
-        navigate("/facturacion/facturas");
+        navigate("/nomina/nominas");
       })
       .catch((error) => {
         setError(error);
@@ -120,11 +104,13 @@ const FacturaForm = () => {
       });
   };
 
-  const formatInvoiceNumber = (id) => {
-    // Ajusta el número de dígitos que deseas mostrar para el número de factura
-    const paddedId = String(id).padStart(9, "0");
-    return `001-001-${paddedId}`;
-  };
+  if (loading) {
+    return <p>Cargando...</p>;
+  }
+
+  if (error) {
+    return <p>Error al cargar los datos: {error.message}</p>;
+  }
 
   return (
     <Layout
@@ -137,11 +123,11 @@ const FacturaForm = () => {
         <Row>
           <Col>
             <Form.Group controlId="formId">
-              <Form.Label>Factura Nro</Form.Label>
+              <Form.Label>Nomina Nro</Form.Label>
               <Form.Control
                 type="text"
                 name="nro"
-                value={factura.id ? formatInvoiceNumber(factura.id) : ""}
+                value={nomina.numero}
                 // onChange={handleChange}
                 placeholder="Generado automáticamente al crear"
                 readOnly
@@ -158,8 +144,8 @@ const FacturaForm = () => {
                 selected={datepick}
                 onChange={(date) => {
                   setDatePick(date);
-                  setFactura((prevFactura) => ({
-                    ...prevFactura,
+                  setNomina((prevNomina) => ({
+                    ...prevNomina,
                     fecha: date,
                   }));
                 }}
@@ -172,57 +158,38 @@ const FacturaForm = () => {
         <Row>
           <Col>
             <Form.Group controlId="formNombre">
-              <Form.Label>Cliente</Form.Label>
+              <Form.Label>Empleado</Form.Label>
               <Form.Select
-                aria-label="Seleccionar Cliente"
-                name="cliente"
-                value={factura.cliente.id}
+                aria-label="Seleccionar Empleado"
+                name="empleado"
+                value={nomina.empleado.id}
                 onChange={handleChange}
                 required
               >
-                <option value="">Seleccione un cliente</option>
-                {clientes.map((cliente) => (
-                  <option key={cliente.id} value={cliente.id}>
-                    {cliente.nombre}
+                <option value="">Seleccione un empleado</option>
+                {empleados.map((empleado) => (
+                  <option key={empleado.id} value={empleado.id}>
+                    {empleado.nombre}
                   </option>
                 ))}
               </Form.Select>
             </Form.Group>
-          </Col>
-          <Col>
-            <Form.Group controlId="formDireccion">
-              <Form.Label>Ciudad</Form.Label>
-              <Form.Select
-                aria-label="Seleccionar Ciudad"
-                name="ciudad"
-                value={factura.ciudad.codigo}
-                onChange={handleChange}
-                required
-              >
-                <option value="">Seleccione una ciudad</option>
-                {ciudades.map((ciudad) => (
-                  <option key={ciudad.codigo} value={ciudad.codigo}>
-                    {ciudad.nombre}
-                  </option>
-                ))}
-              </Form.Select>
-            </Form.Group>
-          </Col>
+          </Col>          
         </Row>
 
-        <FacturaDetalle
-          facturaDetalles={factura.facturaDetalles}
-          setFacturaDetalles={(detalles) =>
-            setFactura({ ...factura, facturaDetalles: detalles })
+        <NominaDetalle
+          nominaDetalles={nomina.nominaDetalles}
+          setNominaDetalles={(detalles) =>
+            setNomina({ ...nomina, nominaDetalles: detalles })
           }
         />
 
         <Button variant="primary" type="submit" className="mt-3">
-          {id ? "Actualizar" : "Agregar"}
+          {numero ? "Actualizar" : "Agregar"}
         </Button>
       </Form>
     </Layout>
   );
 };
 
-export default FacturaForm;
+export default NominaForm;

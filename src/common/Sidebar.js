@@ -12,14 +12,19 @@ const Sidebar = () => {
     const path = location.pathname;
     if (path.startsWith('/nomina')) {
       setActiveMenu('nomina-collapse');
-    } else if (path.startsWith('/weekly') || path.startsWith('/monthly') || path.startsWith('/annually')) {
-      setActiveMenu('dashboard-collapse');
+      if(path.startsWith('/nomina/reportes')){
+        setActiveMenu('nomina-report-collapse');
+      }
+    } else if (path.startsWith('/activo')) {
+      setActiveMenu('activos-collapse');
+      if(path.startsWith('/activo/reportes')){
+        setActiveMenu('activos-report-collapse');
+      }
     } else if (path.startsWith('/new') || path.startsWith('/processed') || path.startsWith('/shipped')) {
       setActiveMenu('orders-collapse');
     } else if (path.startsWith('/facturacion')) {
       setActiveMenu('invoices-collapse');
       if(path.startsWith('/facturacion/reportes')){
-        // setActiveMenu('invoices-collapse');
         setActiveMenu('invoices-report-collapse');
       }
     } else if (path.startsWith('/profile') || path.startsWith('/settings')) {
@@ -40,27 +45,44 @@ const Sidebar = () => {
       </a> */}
           <ul className="list-unstyled ps-0">
             <li className="mb-1">
-              <button className={`btn btn-toggle d-inline-flex align-items-center rounded border-0 ${activeMenu === 'nomina-collapse' ? '' : 'collapsed'}`} data-bs-toggle="collapse" data-bs-target="#nomina-collapse" aria-expanded={activeMenu === 'nomina-collapse'}>
+              <button className={`btn btn-toggle d-inline-flex align-items-center rounded border-0 ${activeMenu && activeMenu.startsWith('nomina-') ? '' : 'collapsed'}`} data-bs-toggle="collapse" data-bs-target="#nomina-collapse" aria-expanded={activeMenu && activeMenu.startsWith('nomina-')}>
                 Nómina
               </button>
-              <div className={`collapse ${activeMenu === 'nomina-collapse' ? 'show' : ''}`} id="nomina-collapse">
+              <div className={`collapse ${activeMenu && activeMenu.startsWith('nomina-') ? 'show' : ''}`} id="nomina-collapse">
                 <ul className="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                   <li><NavLink to="/nomina/motivos" className="link-body-emphasis d-inline-flex text-decoration-none rounded">Motivos</NavLink></li>
                   <li><NavLink to="/nomina/empleados" className="link-body-emphasis d-inline-flex text-decoration-none rounded">Empleados</NavLink></li>
-                  <li><NavLink to="/reports" className="link-body-emphasis d-inline-flex text-decoration-none rounded">Reports</NavLink></li>
+                  <li><NavLink to="/nomina/nominas" className="link-body-emphasis d-inline-flex text-decoration-none rounded">Nominas</NavLink></li>
+                  <li className="mb-1 ms-3">
+                    <button className={`btn btn-toggle d-inline-flex align-items-center rounded border-0 ${activeMenu === 'nomina-report-collapse' ? '' : 'collapsed'}`} data-bs-toggle="collapse" data-bs-target="#nomina-report-collapse" aria-expanded={activeMenu === 'nomina-report-collapse'}>
+                      Reportes
+                    </button>
+                    <div className={`collapse ${activeMenu === 'nomina-report-collapse' ? 'show' : ''}`} id="nomina-report-collapse">
+                      <li><NavLink to="/nomina/reportes/valores-a-pagar" className="link-body-emphasis d-inline-flex text-decoration-none rounded">Valores a Pagar</NavLink></li>
+                      <li><NavLink to="/nomina/reportes/nomina-cruzada" className="link-body-emphasis d-inline-flex text-decoration-none rounded">Nómina Cruzada</NavLink></li>
+                    </div>
+                  </li>
                 </ul>
               </div>
             </li>
             <li className="mb-1">
-              <button className={`btn btn-toggle d-inline-flex align-items-center rounded border-0 ${activeMenu === 'dashboard-collapse' ? '' : 'collapsed'}`} data-bs-toggle="collapse" data-bs-target="#dashboard-collapse" aria-expanded={activeMenu === 'dashboard-collapse'}>
+              <button className={`btn btn-toggle d-inline-flex align-items-center rounded border-0 ${activeMenu === 'activos-collapse' ? '' : 'collapsed'}`} data-bs-toggle="collapse" data-bs-target="#activos-collapse" aria-expanded={activeMenu === 'activos-collapse'}>
                 Activos
               </button>
-              <div className={`collapse ${activeMenu === 'dashboard-collapse' ? 'show' : ''}`} id="dashboard-collapse">
+              <div className={`collapse ${activeMenu === 'activos-collapse' ? 'show' : ''}`} id="activos-collapse">
                 <ul className="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                  <li><NavLink to="/overview" className="link-body-emphasis d-inline-flex text-decoration-none rounded">Overview</NavLink></li>
-                  <li><NavLink to="/weekly" className="link-body-emphasis d-inline-flex text-decoration-none rounded">Weekly</NavLink></li>
-                  <li><NavLink to="/monthly" className="link-body-emphasis d-inline-flex text-decoration-none rounded">Monthly</NavLink></li>
-                  <li><NavLink to="/annually" className="link-body-e  mphasis d-inline-flex text-decoration-none rounded">Annually</NavLink></li>
+                  <li><NavLink to="/activo/tipoActivos" className="link-body-emphasis d-inline-flex text-decoration-none rounded">Tipo Activos</NavLink></li>
+                  <li><NavLink to="/activo/activos" className="link-body-emphasis d-inline-flex text-decoration-none rounded">Activos</NavLink></li>
+                  <li><NavLink to="/activo/depreciaciones" className="link-body-emphasis d-inline-flex text-decoration-none rounded">Depreciaciones</NavLink></li>
+                  <li className="mb-1 ms-3">
+                    <button className={`btn btn-toggle d-inline-flex align-items-center rounded border-0 ${activeMenu === 'activos-report-collapse' ? '' : 'collapsed'}`} data-bs-toggle="collapse" data-bs-target="#activos-report-collapse" aria-expanded={activeMenu === 'activos-report-collapse'}>
+                      Reportes
+                    </button>
+                    <div className={`collapse ${activeMenu === 'activos-report-collapse' ? 'show' : ''}`} id="activos-report-collapse">
+                      <li><NavLink to="/activo/reportes/reporte-depreciacion" className="link-body-emphasis d-inline-flex text-decoration-none rounded">Reporte Depreciación</NavLink></li>
+                      {/* <li><NavLink to="/activo/reportes/def" className="link-body-emphasis d-inline-flex text-decoration-none rounded">Nómina Cruzada</NavLink></li> */}
+                    </div>
+                  </li>
                 </ul>
               </div>
             </li>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Button, Form } from 'react-bootstrap';
+import { Button, Col, Form, Row } from 'react-bootstrap';
 import axios from 'axios';
 import Layout from '../../../common/Layout';
 import CustomDatePicker from '../../../common/Custom-Datepicker';
@@ -92,6 +92,8 @@ const EmpleadoForm = () => {
       navigate('/login');
     }}>
       <Form onSubmit={handleSubmit}>
+        <Row>
+        <Col>
         <Form.Group controlId="formRUC">
           <Form.Label>Cédula</Form.Label>
           <Form.Control 
@@ -100,11 +102,19 @@ const EmpleadoForm = () => {
             maxLength={10}
             minLength={10}
             value={empleado.cedula}
-            onChange={handleChange}
+            onChange={(e) => {
+              const value = e.target.value;
+              // Solo permitir que se ingresen números
+              if (/^\d*$/.test(value)) {
+                handleChange(e); // Mantener el cambio si es un número válido
+              }
+            }}
             placeholder="Ingrese el número de cédula..."
             required
           />
         </Form.Group>
+        </Col>
+        <Col>
         <Form.Group controlId="formNombre">
           <Form.Label>Nombre</Form.Label>
           <Form.Control 
@@ -116,6 +126,10 @@ const EmpleadoForm = () => {
             required
           />
         </Form.Group>
+        </Col>
+        </Row>
+        <Row>
+          <Col>
         <Form.Group controlId="formDatePicker">
           <Form.Label>Fecha Ingreso</Form.Label>
           <CustomDatePicker
@@ -134,6 +148,8 @@ const EmpleadoForm = () => {
             required
           />
         </Form.Group>
+        </Col>
+        <Col>
         <Form.Group controlId="formDireccion">
           <Form.Label>Sueldo</Form.Label>
           <Form.Control 
@@ -147,6 +163,8 @@ const EmpleadoForm = () => {
             required
           />
         </Form.Group>
+        </Col>
+        </Row>
         <Button variant="primary" type="submit" className="mt-3">
           {id ? 'Actualizar' : 'Agregar'}
         </Button>

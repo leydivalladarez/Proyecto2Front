@@ -5,7 +5,7 @@ import { Button, Modal } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencil, faTrash } from '@fortawesome/free-solid-svg-icons';
 
-const ClienteTable = () => {
+const ClienteTable = ({ searchTerm }) => {
   const [clientes, setClientes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -19,9 +19,14 @@ const ClienteTable = () => {
     navigate('/login');
   };
 
-  const fetchClientes = async () => {
+  const fetchClientes = async (searchTerm = '') => {
     try {
-      const response = await axios.get('http://localhost:8080/api/v1/clientes');
+      const response = await axios.get(`http://localhost:8080/api/v1/clientes`, {
+        params: {
+          ruc: searchTerm,
+          nombre: searchTerm,
+        },
+      });
       setClientes(response.data);
       setLoading(false);
     } catch (error) {
@@ -31,8 +36,8 @@ const ClienteTable = () => {
   };
 
   useEffect(() => {
-    fetchClientes();
-  }, []);
+    fetchClientes(searchTerm);
+  }, [searchTerm]);
 
   const handleDelete = async () => {
     try {

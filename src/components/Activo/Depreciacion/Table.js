@@ -1,30 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button, Modal } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencil, faTrash } from '@fortawesome/free-solid-svg-icons';
 
-const CiudadTable = ({searchTerm}) => {
-  const [ciudades, setCiudades] = useState([]);
+const Table = () => {
+  const [depreciaciones, setDepreciaciones] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  const [selectedCiudad, setSelectedCiudad] = useState(null);
+  const [selectedDepreciacion, setSelectedDepreciacion] = useState(null);
 
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    navigate('/login');
-  };
-
-  const fetchCiudades = async (searchTerm = '') => {
+  const fetchDepreciaciones = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/api/v1/ciudades',{
-        params: { buscar: searchTerm }
-      });
-      setCiudades(response.data);
+      const response = await axios.get('http://localhost:8080/api/v1/depreciaciones');
+      setDepreciaciones(response.data);
       setLoading(false);
     } catch (error) {
       setError(error);
@@ -33,13 +26,13 @@ const CiudadTable = ({searchTerm}) => {
   };
 
   useEffect(() => {
-    fetchCiudades(searchTerm);
-  }, [searchTerm]);
+    fetchDepreciaciones();
+  }, []);
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`http://localhost:8080/api/v1/ciudades/${selectedCiudad.codigo}`);
-      setCiudades(ciudades.filter(ciudad => ciudad.codigo !== selectedCiudad.codigo));
+      await axios.delete(`http://localhost:8080/api/v1/depreciaciones/${selectedDepreciacion.numero}`);
+      setDepreciaciones(depreciaciones.filter(depreciacion => depreciacion.numero !== selectedDepreciacion.numero));
       setShowModal(false);
     } catch (error) {
       setError(error);
@@ -47,8 +40,8 @@ const CiudadTable = ({searchTerm}) => {
     }
   };
 
-  const handleShowModal = (ciudad) => {
-    setSelectedCiudad(ciudad);
+  const handleShowModal = (depreciacion) => {
+    setSelectedDepreciacion(depreciacion);
     setShowModal(true);
   };
 
@@ -65,21 +58,25 @@ const CiudadTable = ({searchTerm}) => {
       <table className="table">
         <thead>
           <tr>
-            <th>Código</th>
-            <th>Nombre</th>
+            <th>Nro</th>
+            <th>Fecha</th>
+            <th>Observaciones</th>
+            <th>Responsable</th>
             <th className='d-flex justify-content-center'>Acciones</th>
           </tr>
         </thead>
         <tbody>
-          {ciudades.map(ciudad => (
-            <tr key={ciudad.codigo}>
-              <td>{ciudad.codigo}</td>
-              <td>{ciudad.nombre}</td>
+          {depreciaciones.map(depreciacion => (
+            <tr key={depreciacion.numero}>
+              <td><Link to={`/activo/depreciaciones/editar/${depreciacion.numero}`}>{depreciacion.numero}</Link></td>
+              <td>{depreciacion.fecha}</td>
+              <td>{depreciacion.observaciones}</td>
+              <td>{depreciacion.responsable}</td>
               <td className='d-flex justify-content-center'>
-                <Button className='mx-1' variant="primary" onClick={() => navigate(`/facturacion/ciudades/editar/${ciudad.codigo}`)}>
+                <Button className='mx-1' variant="primary" onClick={() => navigate(`/activo/depreciaciones/editar/${depreciacion.numero}`)}>
                   <FontAwesomeIcon icon={faPencil} />
                 </Button>
-                <Button className='mx-1' variant="danger" onClick={() => handleShowModal(ciudad)}>
+                <Button className='mx-1' variant="danger" onClick={() => handleShowModal(depreciacion)}>
                   <FontAwesomeIcon icon={faTrash} />
                 </Button>
               </td>
@@ -93,7 +90,7 @@ const CiudadTable = ({searchTerm}) => {
           <Modal.Title>Confirmar Eliminación</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          ¿Estás seguro de que deseas eliminar a {selectedCiudad?.nombre}?
+          ¿Estás seguro de que deseas eliminar depreciacion {selectedDepreciacion?.numero}?
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setShowModal(false)}>
@@ -108,4 +105,4 @@ const CiudadTable = ({searchTerm}) => {
   );
 };
 
-export default CiudadTable;
+export default Table;

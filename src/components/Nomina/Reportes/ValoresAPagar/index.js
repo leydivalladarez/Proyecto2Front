@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAdd } from '@fortawesome/free-solid-svg-icons';
 import Table from './Table';
 
-const ClienteArticulo = () => {
+const ValoresAPagar = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -22,4 +22,4 @@ const ClienteArticulo = () => {
   );
 };
 
-export default ClienteArticulo;
+export default ValoresAPagar;

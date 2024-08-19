@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Layout from '../../../common/Layout';
-import CiudadTable from './CiudadTable';
+import Table from './Table';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button, Col, Row, Form } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAdd, faSearch } from '@fortawesome/free-solid-svg-icons';
 
-const CiudadList = () => {
+const TipoActivoList = () => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -17,7 +17,7 @@ const CiudadList = () => {
   };
 
   const handleSearch = () => {
-    navigate(`/facturacion/ciudades?search=${searchTerm}`);
+    navigate(`/activo/tipoActivos?search=${searchTerm}`);
   };
 
   return (
@@ -37,14 +37,14 @@ const CiudadList = () => {
           </Button>
         </Col>
         <Col className='d-flex justify-content-end'>
-          <Button variant="success" onClick={() => navigate('/facturacion/ciudades/agregar')}>
+          <Button variant="success" onClick={() => navigate('/activo/tipoActivos/agregar')}>
             <FontAwesomeIcon icon={faAdd} /> Agregar
           </Button>
         </Col>
       </Row>
-      <CiudadTable searchTerm={searchTerm} />
+      <Table searchTerm={searchTerm} />
     </Layout>
   );
 };
 
-export default CiudadList;
+export default TipoActivoList;

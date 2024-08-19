@@ -5,19 +5,19 @@ import { Button, Modal } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencil, faTrash } from '@fortawesome/free-solid-svg-icons';
 
-const FacturaTable = () => {
-  const [facturas, setFacturas] = useState([]);
+const Table = () => {
+  const [nominas, setNominas] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  const [selectedFactura, setSelectedFactura] = useState(null);
+  const [selectedNomina, setSelectedNomina] = useState(null);
 
   const navigate = useNavigate();
 
-  const fetchFacturas = async () => {
+  const fetchNominas = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/api/v1/facturas');
-      setFacturas(response.data);
+      const response = await axios.get('http://localhost:8080/api/v1/nominas');
+      setNominas(response.data);
       setLoading(false);
     } catch (error) {
       setError(error);
@@ -26,13 +26,13 @@ const FacturaTable = () => {
   };
 
   useEffect(() => {
-    fetchFacturas();
+    fetchNominas();
   }, []);
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`http://localhost:8080/api/v1/facturas/${selectedFactura.id}`);
-      setFacturas(facturas.filter(factura => factura.id !== selectedFactura.id));
+      await axios.delete(`http://localhost:8080/api/v1/nominas/${selectedNomina.numero}`);
+      setNominas(nominas.filter(nomina => nomina.numero !== selectedNomina.numero));
       setShowModal(false);
     } catch (error) {
       setError(error);
@@ -40,15 +40,9 @@ const FacturaTable = () => {
     }
   };
 
-  const handleShowModal = (factura) => {
-    setSelectedFactura(factura);
+  const handleShowModal = (nomina) => {
+    setSelectedNomina(nomina);
     setShowModal(true);
-  };
-
-  const formatInvoiceNumber = (id) => {
-    // Ajusta el número de dígitos que deseas mostrar para el número de factura
-    const paddedId = String(id).padStart(9, '0');
-    return `001-001-${paddedId}`;
   };
 
   if (loading) {
@@ -66,23 +60,21 @@ const FacturaTable = () => {
           <tr>
             <th>Nro</th>
             <th>Fecha</th>
-            <th>Cliente</th>
-            <th>Ciudad</th>
+            <th>Empleado</th>
             <th className='d-flex justify-content-center'>Acciones</th>
           </tr>
         </thead>
         <tbody>
-          {facturas.map(factura => (
-            <tr key={factura.id}>
-              <td><Link to={`/facturacion/facturas/editar/${factura.id}`}>{formatInvoiceNumber(factura.id)}</Link></td>
-              <td>{factura.fecha}</td>
-              <td>{factura.cliente.nombre}</td>
-              <td>{factura.ciudad.nombre}</td>
+          {nominas.map(nomina => (
+            <tr key={nomina.numero}>
+              <td><Link to={`/nomina/nominas/editar/${nomina.numero}`}>{nomina.numero}</Link></td>
+              <td>{nomina.fecha}</td>
+              <td>{nomina.empleado.nombre}</td>
               <td className='d-flex justify-content-center'>
-                <Button className='mx-1' variant="primary" onClick={() => navigate(`/facturacion/facturas/editar/${factura.id}`)}>
+                <Button className='mx-1' variant="primary" onClick={() => navigate(`/nomina/nominas/editar/${nomina.numero}`)}>
                   <FontAwesomeIcon icon={faPencil} />
                 </Button>
-                <Button className='mx-1' variant="danger" onClick={() => handleShowModal(factura)}>
+                <Button className='mx-1' variant="danger" onClick={() => handleShowModal(nomina)}>
                   <FontAwesomeIcon icon={faTrash} />
                 </Button>
               </td>
@@ -96,7 +88,7 @@ const FacturaTable = () => {
           <Modal.Title>Confirmar Eliminación</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          ¿Estás seguro de que deseas eliminar factura {selectedFactura?.id}?
+          ¿Estás seguro de que deseas eliminar nomina {selectedNomina?.numero}?
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setShowModal(false)}>
@@ -111,4 +103,4 @@ const FacturaTable = () => {
   );
 };
 
-export default FacturaTable;
+export default Table;

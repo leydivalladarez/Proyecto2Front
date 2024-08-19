@@ -1,13 +1,13 @@
 import React, { useState, useEffect  } from "react";
 import { useNavigate, useLocation  } from "react-router-dom";
 import Layout from "../../../common/Layout";
-import ClienteTable from "./ClienteTable";
+import Table from "./Table";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Button, Col, Form, Row } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAdd, faSearch } from "@fortawesome/free-solid-svg-icons";
 
-const ClienteList = () => {
+const ActivoList = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [searchTerm, setSearchTerm] = useState("");
@@ -24,7 +24,7 @@ const ClienteList = () => {
   };
 
   const handleSearch = () => {
-    navigate(`/facturacion/clientes?search=${searchTerm}`);
+    navigate(`/activo/activos?search=${searchTerm}`);
   };
 
   return (
@@ -33,11 +33,11 @@ const ClienteList = () => {
         <Col>
           <Form.Control
             type="text"
-            placeholder="Buscar por RUC o Nombre"
+            placeholder="Buscar por Nombre"
             value={searchTerm}
             onChange={(e) => {
               setSearchTerm(e.target.value);
-              navigate(`/facturacion/clientes?search=${e.target.value}`);
+              navigate(`/activo/activos?search=${e.target.value}`);
             }}
           />
         </Col>
@@ -49,15 +49,15 @@ const ClienteList = () => {
         <Col className="d-flex justify-content-end">
           <Button
             variant="success"
-            onClick={() => navigate("/facturacion/clientes/agregar")}
+            onClick={() => navigate("/activo/activos/agregar")}
           >
             <FontAwesomeIcon icon={faAdd} /> Agregar
           </Button>
         </Col>
       </Row>
-      <ClienteTable searchTerm={searchTerm} />
+      <Table searchTerm={searchTerm} />
     </Layout>
   );
 };
 
-export default ClienteList;
+export default ActivoList;

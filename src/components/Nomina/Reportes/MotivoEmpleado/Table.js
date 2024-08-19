@@ -2,15 +2,15 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
 const Table = () => {
-  const [articulos, setArticulos] = useState([]);
-  const [clientes, setClientes] = useState([]);
+  const [motivos, setMotivos] = useState([]);
+  const [empleados, setEmpleados] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const fetchArticulos = async () => {
+  const fetchEmpleados = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/api/v1/reportes/ventas-cruzadas');
-      setArticulos(response.data);
+      const response = await axios.get('http://localhost:8080/api/v1/reportes/reporte-motivos');
+      setEmpleados(response.data);
       setLoading(false);
     } catch (error) {
       setError(error);
@@ -18,10 +18,10 @@ const Table = () => {
     }
   };
 
-  const fetchClientes = async () => {
+  const fetchMotivos = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/api/v1/clientes');
-      setClientes(response.data);
+      const response = await axios.get('http://localhost:8080/api/v1/motivos');
+      setMotivos(response.data);
       setLoading(false);
     } catch (error) {
       setError(error);
@@ -30,8 +30,8 @@ const Table = () => {
   };
 
   useEffect(() => {
-    fetchArticulos();
-    fetchClientes();
+    fetchMotivos();
+    fetchEmpleados();
   }, []);
 
 
@@ -48,18 +48,18 @@ const Table = () => {
       <table className="table table-striped">
         <thead>
           <tr>
-            <th>Artículo\Cliente</th>
-            {clientes.map(cliente => (
-              <th>{cliente.nombre}</th>
+            <th>Empleado\Motivo</th>
+            {motivos.map(motivo => (
+              <th>{motivo.nombre}</th>
             ))}
           </tr>
         </thead>
         <tbody>
-          {articulos.map(articulo => (
-            <tr key={articulo.codigoArticulo}>
-              <td>{articulo.nombreArticulo}</td>
-              {clientes.map(cliente => (
-                <td>{(articulo.ventasPorCliente[cliente.id] ?? 0).toFixed(2)}</td>
+          {empleados.map(empleado => (
+            <tr key={empleado.empleadoId}>
+              <td>{empleado.nombreEmpleado}</td>
+              {motivos.map(motivo => (
+                <td>{(empleado.motivosPorEmpleado[motivo.codigo] ?? 0).toFixed(2)}</td>
               )) }
             </tr>
           ))}

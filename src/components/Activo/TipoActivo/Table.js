@@ -5,12 +5,12 @@ import { Button, Modal } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencil, faTrash } from '@fortawesome/free-solid-svg-icons';
 
-const CiudadTable = ({searchTerm}) => {
-  const [ciudades, setCiudades] = useState([]);
+const Table = ({searchTerm}) => {
+  const [tipoActivos, settipoActivos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  const [selectedCiudad, setSelectedCiudad] = useState(null);
+  const [selectedtipoActivo, setSelectedtipoActivo] = useState(null);
 
   const navigate = useNavigate();
 
@@ -19,12 +19,12 @@ const CiudadTable = ({searchTerm}) => {
     navigate('/login');
   };
 
-  const fetchCiudades = async (searchTerm = '') => {
+  const fetchtipoActivos = async (searchTerm = '') => {
     try {
-      const response = await axios.get('http://localhost:8080/api/v1/ciudades',{
+      const response = await axios.get('http://localhost:8080/api/v1/tipoActivos',{
         params: { buscar: searchTerm }
       });
-      setCiudades(response.data);
+      settipoActivos(response.data);
       setLoading(false);
     } catch (error) {
       setError(error);
@@ -33,13 +33,13 @@ const CiudadTable = ({searchTerm}) => {
   };
 
   useEffect(() => {
-    fetchCiudades(searchTerm);
+    fetchtipoActivos(searchTerm);
   }, [searchTerm]);
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`http://localhost:8080/api/v1/ciudades/${selectedCiudad.codigo}`);
-      setCiudades(ciudades.filter(ciudad => ciudad.codigo !== selectedCiudad.codigo));
+      await axios.delete(`http://localhost:8080/api/v1/tipoActivos/${selectedtipoActivo.codigo}`);
+      settipoActivos(tipoActivos.filter(tipoActivo => tipoActivo.codigo !== selectedtipoActivo.codigo));
       setShowModal(false);
     } catch (error) {
       setError(error);
@@ -47,8 +47,8 @@ const CiudadTable = ({searchTerm}) => {
     }
   };
 
-  const handleShowModal = (ciudad) => {
-    setSelectedCiudad(ciudad);
+  const handleShowModal = (tipoActivo) => {
+    setSelectedtipoActivo(tipoActivo);
     setShowModal(true);
   };
 
@@ -71,15 +71,15 @@ const CiudadTable = ({searchTerm}) => {
           </tr>
         </thead>
         <tbody>
-          {ciudades.map(ciudad => (
-            <tr key={ciudad.codigo}>
-              <td>{ciudad.codigo}</td>
-              <td>{ciudad.nombre}</td>
+          {tipoActivos.map(tipoActivo => (
+            <tr key={tipoActivo.codigo}>
+              <td>{tipoActivo.codigo}</td>
+              <td>{tipoActivo.nombre}</td>
               <td className='d-flex justify-content-center'>
-                <Button className='mx-1' variant="primary" onClick={() => navigate(`/facturacion/ciudades/editar/${ciudad.codigo}`)}>
+                <Button className='mx-1' variant="primary" onClick={() => navigate(`/activo/tipoActivos/editar/${tipoActivo.codigo}`)}>
                   <FontAwesomeIcon icon={faPencil} />
                 </Button>
-                <Button className='mx-1' variant="danger" onClick={() => handleShowModal(ciudad)}>
+                <Button className='mx-1' variant="danger" onClick={() => handleShowModal(tipoActivo)}>
                   <FontAwesomeIcon icon={faTrash} />
                 </Button>
               </td>
@@ -93,7 +93,7 @@ const CiudadTable = ({searchTerm}) => {
           <Modal.Title>Confirmar Eliminación</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          ¿Estás seguro de que deseas eliminar a {selectedCiudad?.nombre}?
+          ¿Estás seguro de que deseas eliminar a {selectedtipoActivo?.nombre}?
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setShowModal(false)}>
@@ -108,4 +108,4 @@ const CiudadTable = ({searchTerm}) => {
   );
 };
 
-export default CiudadTable;
+export default Table;

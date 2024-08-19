@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
 const Table = () => {
-  const [ciudades, setCiudades] = useState([]);
+  const [valores, setValores] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const fetchCiudades = async () => {
+  const fetchValores = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/api/v1/reportes/ventas-totales-ciudades');
-      setCiudades(response.data);
+      const response = await axios.get('http://localhost:8080/api/v1/reportes/valores-a-pagar');
+      setValores(response.data);
       setLoading(false);
     } catch (error) {
       setError(error);
@@ -18,7 +18,7 @@ const Table = () => {
   };
 
   useEffect(() => {
-    fetchCiudades();
+    fetchValores();
   }, []);
 
 
@@ -35,17 +35,15 @@ const Table = () => {
       <table className="table table-striped">
         <thead>
           <tr>
-            <th>Código</th>
-            <th>Nombre</th>
-            <th>Ventas Totales</th>
+            <th>Empleado</th>
+            <th>Valor a Pagar</th>
           </tr>
         </thead>
         <tbody>
-          {ciudades.map(ciudad => (
-            <tr key={ciudad.codigo}>
-              <td>{ciudad.codigo}</td>
-              <td>{ciudad.nombre}</td>
-              <td>{ciudad.ventasTotales ? ciudad.ventasTotales.toFixed(2) : '0.00'}</td>              
+          {valores.map(valor => (
+            <tr key={valor.codigo}>
+              <td>{valor.nombreEmpleado}</td>
+              <td>{valor.valorTotal.toFixed(2)}</td>
             </tr>
           ))}
         </tbody>

@@ -14,6 +14,17 @@ import MotivoList from './Nomina/Motivo/MotivoList';
 import MotivoForm from './Nomina/Motivo/MotivoForm';
 import EmpleadoList from './Nomina/Empleado/EmpleadoList';
 import EmpleadoForm from './Nomina/Empleado/EmpleadoForm';
+import NominaList from './Nomina/Nomina/NominaList';
+import NominaForm from './Nomina/Nomina/NominaForm';
+import ValoresAPagar from './Nomina/Reportes/ValoresAPagar';
+import MotivoEmpleado from './Nomina/Reportes/MotivoEmpleado';
+import TipoActivoList from './Activo/TipoActivo/TipoActivoList';
+import TipoActivoForm from './Activo/TipoActivo/TipoActivoForm';
+import ActivoList from './Activo/Activo/ActivoList';
+import ActivoForm from './Activo/Activo/ActivoForm';
+import DepreciacionList from './Activo/Depreciacion/DepreciacionList';
+import DepreciacionForm from './Activo/Depreciacion/DepreciacionForm';
+import ReporteDepreciacion from './Activo/Reportes/ReporteDepreciacion';
 
 const AppRoutes = ({ isAuthenticated }) => {
   return (
@@ -54,6 +65,28 @@ const AppRoutes = ({ isAuthenticated }) => {
       <Route path="/nomina/empleados" element={<EmpleadoList />} />
       <Route path="/nomina/empleados/agregar" element={<EmpleadoForm />} />
       <Route path="/nomina/empleados/editar/:id" element={<EmpleadoForm />} />
+
+      <Route path="/nomina/nominas" element={<NominaList />} />
+      <Route path="/nomina/nominas/agregar" element={<NominaForm />} />
+      <Route path="/nomina/nominas/editar/:numero" element={<NominaForm />} />
+
+      <Route path="/nomina/reportes/valores-a-pagar" element={<ValoresAPagar />} />
+      <Route path="/nomina/reportes/nomina-cruzada" element={<MotivoEmpleado />} />
+
+      {/* Activo */}
+      <Route path="/activo/tipoActivos" element={<TipoActivoList />} />
+      <Route path="/activo/tipoActivos/agregar" element={<TipoActivoForm />} />
+      <Route path="/activo/tipoActivos/editar/:codigo" element={<TipoActivoForm />} />
+
+      <Route path="/activo/activos" element={<ActivoList />} />
+      <Route path="/activo/activos/agregar" element={<ActivoForm />} />
+      <Route path="/activo/activos/editar/:id" element={<ActivoForm />} />
+
+      <Route path="/activo/depreciaciones" element={<DepreciacionList />} />
+      <Route path="/activo/depreciaciones/agregar" element={<DepreciacionForm />} />
+      <Route path="/activo/depreciaciones/editar/:numero" element={<DepreciacionForm />} />
+
+      <Route path="/activo/reportes/reporte-depreciacion" element={<ReporteDepreciacion />} />
 
       <Route path="/" element={<Navigate to="/login" />} />
     </Routes>

@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAdd } from '@fortawesome/free-solid-svg-icons';
 import Table from './Table';
 
-const VentaCiudades = () => {
+const MotivoEmpleado = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -22,4 +22,4 @@ const VentaCiudades = () => {
   );
 };
 
-export default VentaCiudades;
+export default MotivoEmpleado;
