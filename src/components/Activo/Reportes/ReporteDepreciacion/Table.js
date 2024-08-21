@@ -29,7 +29,11 @@ const Table = ({ fechaInicio, fechaFin, fetchTrigger }) => {
   }, [fetchTrigger, fetchDepreciaciones]);
 
   if (loading) {
+    if(fechaInicio !== null && fechaFin !== null) {
     return <p>Cargando...</p>;
+    }else{
+      return <p>Debe seleccionar "Fecha de inicio" y "Fecha de fin" para consultar.</p>;
+    }
   }
 
   if (error) {

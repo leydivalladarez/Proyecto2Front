@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Layout from '../../../../common/Layout';
-import { Button, Col, Row } from 'react-bootstrap';
+import { Button, Col, Form, Row } from 'react-bootstrap';
 import Table from './Table';
 import CustomDatePicker from "../../../../common/Custom-Datepicker";
 
@@ -22,22 +22,29 @@ const ReporteDepreciacion = () => {
 
   return (
     <Layout onLogout={handleLogout}>
-      <Row>
-        <Col>
-          <CustomDatePicker 
-            selected={fechaInicio} 
-            onChange={date => setFechaInicio(date)} 
-            placeholderText="Fecha Inicio" 
-          />
+      <Row className='align-items-end'>
+        <Col xl={2} md={3} sm={5}>
+          <Form.Group controlId="formFechaInicio">
+            <Form.Label>Fecha de Inicio</Form.Label>
+            <CustomDatePicker 
+              selected={fechaInicio} 
+              onChange={date => setFechaInicio(date)} 
+              placeholderText="Fecha Inicio" 
+            />
+          </Form.Group>
+        </Col>
+        <Col xl={2} md={3} sm={5}>
+          <Form.Group controlId="formFechaInicio">
+            <Form.Label>Fecha de Fin</Form.Label>
+            <CustomDatePicker 
+              selected={fechaFin} 
+              onChange={date => setFechaFin(date)} 
+              placeholderText="Fecha Fin" 
+            />
+          </Form.Group>
         </Col>
         <Col>
-          <CustomDatePicker 
-            selected={fechaFin} 
-            onChange={date => setFechaFin(date)} 
-            placeholderText="Fecha Fin" 
-          />
-        </Col>
-        <Col>
+          <br />
           <Button 
             onClick={handleSearch} 
             variant="primary"

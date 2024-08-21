@@ -14,11 +14,6 @@ const ClienteTable = ({ searchTerm }) => {
 
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    navigate('/login');
-  };
-
   const fetchClientes = async (searchTerm = '') => {
     try {
       const response = await axios.get(`http://localhost:8080/api/v1/clientes`, {

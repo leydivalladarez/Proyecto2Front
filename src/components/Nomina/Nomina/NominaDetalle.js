@@ -6,14 +6,13 @@ import { faAdd, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 const NominaDetalle = ({ nominaDetalles = [], setNominaDetalles }) => {
   const [motivos, setMotivos] = useState([]);
-  const [subtotal, setSubtotal] = useState(0);
   const [detalleNuevo, setDetalleNuevo] = useState({
-    motivo: {codigo : ''},
+    motivo: { codigo: '', tipo: '' },
     valor: '',
   });
 
   useEffect(() => {
-    // Cargar la lista de artículos
+    // Cargar la lista de motivos
     axios
       .get('http://localhost:8080/api/v1/motivos')
       .then((response) => {
@@ -25,42 +24,39 @@ const NominaDetalle = ({ nominaDetalles = [], setNominaDetalles }) => {
   }, []);
 
   const agregarDetalle = () => {
-    console.table(detalleNuevo);
-    // return;
     if (!detalleNuevo.motivo.codigo || !detalleNuevo.valor) {
       return;
     }
 
     setNominaDetalles([...nominaDetalles, { ...detalleNuevo }]);
     setDetalleNuevo({
-      motivo: {codigo : ''},
+      motivo: { codigo: '', tipo: '' },
       valor: '',
     });
   };
 
   const handleMotivoAgregarDetalle = (valor) => {
     const motivo = motivos.find((a) => a.codigo.toString() === valor);
-    if(motivo){
-        setDetalleNuevo({
-            ...detalleNuevo,
-            motivo: {codigo : valor},
-            valor: motivo.valor,
-        });
-    }    
-  }
+    if (motivo) {
+      setDetalleNuevo({
+        ...detalleNuevo,
+        motivo: { codigo: valor, tipo: motivo.tipo },
+        valor: '',
+      });
+    }
+  };
 
   const handleDetalleChange = (index, campo, valor) => {
     const nuevosDetalles = [...nominaDetalles];
 
-      if (campo === 'motivoId') {
-        const motivo = motivos.find((a) => a.codigo.toString() === valor);
-        if (motivo) {
-          nuevosDetalles[index].motivo = motivo;
-        }
-      } else {
-        nuevosDetalles[index][campo] = valor;
-
+    if (campo === 'motivoId') {
+      const motivo = motivos.find((a) => a.codigo.toString() === valor);
+      if (motivo) {
+        nuevosDetalles[index].motivo = motivo;
       }
+    } else {
+      nuevosDetalles[index][campo] = valor;
+    }
 
     setNominaDetalles(nuevosDetalles);
   };
@@ -70,14 +66,33 @@ const NominaDetalle = ({ nominaDetalles = [], setNominaDetalles }) => {
     setNominaDetalles(nuevosDetalles);
   };
 
+  const calcularSumas = () => {
+    let sumaDevengos = 0;
+    let sumaDeducciones = 0;
+
+    nominaDetalles.forEach((detalle) => {
+      if (detalle.motivo.tipo === 'ingreso') {
+        sumaDevengos += detalle.valor;
+      } else if (detalle.motivo.tipo === 'egreso') {
+        sumaDeducciones += detalle.valor;
+      }
+    });
+
+    return { sumaDevengos, sumaDeducciones };
+  };
+
+  const { sumaDevengos, sumaDeducciones } = calcularSumas();
+  const liquidoAPercibir = sumaDevengos - sumaDeducciones;
+
   return (
     <div>
       <Table striped bordered hover className="mt-3">
         <thead>
           <tr>
             <th>Motivo</th>
-            <th>Valor</th>
-            <th>Acciones</th>
+            <th>Devengos</th>
+            <th>Deducciones</th>
+            <th className='d-flex justify-content-center'>Acciones</th>
           </tr>
         </thead>
         <tbody>
@@ -99,20 +114,38 @@ const NominaDetalle = ({ nominaDetalles = [], setNominaDetalles }) => {
                 </Form.Select>
               </td>              
               <td>
-              <Form.Control
-                type="number"
-                min="0"
-                step="0.01"
-                value={detalle.valor}
-                onChange={(e) => {
-                  const value = e.target.value;
-                  // Expresión regular para permitir solo números con hasta 2 decimales
-                  const regex = /^\d+(\.\d{0,2})?$/;
-                  if (regex.test(value)) {
-                    handleDetalleChange(index, 'valor', Number(value));
-                  }
-                }}
-              />
+                {detalle.motivo.tipo === 'ingreso' && (
+                  <Form.Control
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    value={detalle.valor}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      const regex = /^\d+(\.\d{0,2})?$/;
+                      if (regex.test(value)) {
+                        handleDetalleChange(index, 'valor', Number(value));
+                      }
+                    }}
+                  />
+                )}
+              </td>
+              <td>
+                {detalle.motivo.tipo === 'egreso' && (
+                  <Form.Control
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    value={detalle.valor}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      const regex = /^\d+(\.\d{0,2})?$/;
+                      if (regex.test(value)) {
+                        handleDetalleChange(index, 'valor', Number(value));
+                      }
+                    }}
+                  />
+                )}
               </td>
               <td className='d-flex justify-content-center'>
                 <Button variant="danger" onClick={() => eliminarDetalle(index)}>
@@ -138,23 +171,44 @@ const NominaDetalle = ({ nominaDetalles = [], setNominaDetalles }) => {
               </Form.Select>
             </td>
             <td>
-              <Form.Control
-                type="number"
-                min="0"
-                step="0.01"
-                value={detalleNuevo.valor}
-                onChange={(e) =>{
-                  const value = e.target.value;
-                  // Expresión regular para permitir solo números con hasta 2 decimales
-                  const regex = /^\d+(\.\d{0,2})?$/;
-                  if (regex.test(value)) {
-                    setDetalleNuevo({
-                      ...detalleNuevo,
-                      valor: Number(e.target.value),
-                    })
-                  }
-                }}
-              />
+              {detalleNuevo.motivo.tipo === 'ingreso' && (
+                <Form.Control
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  value={detalleNuevo.valor}
+                  onChange={(e) =>{
+                    const value = e.target.value;
+                    const regex = /^\d+(\.\d{0,2})?$/;
+                    if (regex.test(value)) {
+                      setDetalleNuevo({
+                        ...detalleNuevo,
+                        valor: Number(e.target.value),
+                      })
+                    }
+                  }}
+                />
+              )}
+            </td>
+            <td>
+              {detalleNuevo.motivo.tipo === 'egreso' && (
+                <Form.Control
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  value={detalleNuevo.valor}
+                  onChange={(e) =>{
+                    const value = e.target.value;
+                    const regex = /^\d+(\.\d{0,2})?$/;
+                    if (regex.test(value)) {
+                      setDetalleNuevo({
+                        ...detalleNuevo,
+                        valor: Number(e.target.value),
+                      })
+                    }
+                  }}
+                />
+              )}
             </td>
             <td className='d-flex justify-content-center'>
               <Button variant="primary" onClick={agregarDetalle}>
@@ -162,8 +216,15 @@ const NominaDetalle = ({ nominaDetalles = [], setNominaDetalles }) => {
               </Button>
             </td>
           </tr>
+          <tr>
+            <td><strong>Total</strong></td>
+            <td><strong>{sumaDevengos.toFixed(2)}</strong></td>
+            <td><strong>{sumaDeducciones.toFixed(2)}</strong></td>
+            <td></td>
+          </tr>
         </tbody>
       </Table>
+      <h5 className="mt-3">Líquido a Percibir: <strong>{liquidoAPercibir.toFixed(2)}</strong></h5>
     </div>
   );
 };

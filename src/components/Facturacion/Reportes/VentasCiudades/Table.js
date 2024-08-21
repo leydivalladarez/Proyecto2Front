@@ -1,25 +1,31 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import axios from 'axios';
 
-const Table = () => {
+const Table = ({ fechaInicio, fechaFin, fetchTrigger }) => {
   const [ciudades, setCiudades] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const fetchCiudades = async () => {
+  const fetchCiudades = useCallback(async () => {
     try {
-      const response = await axios.get('http://localhost:8080/api/v1/reportes/ventas-totales-ciudades');
+      const response = await axios.get('http://localhost:8080/api/v1/reportes/ventas-totales-ciudades', 
+        (fechaInicio && fechaFin) ? {
+        params: {
+          fechaInicio: fechaInicio.toISOString().split('T')[0],
+          fechaFinal: fechaFin.toISOString().split('T')[0]
+        }
+      }:{});
       setCiudades(response.data);
       setLoading(false);
     } catch (error) {
       setError(error);
       setLoading(false);
     }
-  };
+  }, [fechaInicio, fechaFin]);
 
   useEffect(() => {
     fetchCiudades();
-  }, []);
+  }, [fetchCiudades]);
 
 
   if (loading) {

@@ -5,7 +5,7 @@ import { Button, Modal } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencil, faTrash } from '@fortawesome/free-solid-svg-icons';
 
-const Table = () => {
+const Table = ({ searchTerm }) => {
   const [nominas, setNominas] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -14,9 +14,14 @@ const Table = () => {
 
   const navigate = useNavigate();
 
-  const fetchNominas = async () => {
+  const fetchNominas = async (searchTerm = '') => {
     try {
-      const response = await axios.get('http://localhost:8080/api/v1/nominas');
+      const response = await axios.get('http://localhost:8080/api/v1/nominas', {
+        params: {
+          numero: searchTerm,
+          nombre: searchTerm,
+        },
+      });
       setNominas(response.data);
       setLoading(false);
     } catch (error) {
@@ -26,8 +31,8 @@ const Table = () => {
   };
 
   useEffect(() => {
-    fetchNominas();
-  }, []);
+    fetchNominas(searchTerm);
+  }, [searchTerm]);
 
   const handleDelete = async () => {
     try {

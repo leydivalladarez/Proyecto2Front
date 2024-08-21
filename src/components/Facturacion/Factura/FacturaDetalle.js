@@ -26,6 +26,10 @@ const FacturaDetalle = ({ facturaDetalles = [], setFacturaDetalles }) => {
       });
   }, []);
 
+  useEffect(() => {
+    calcularTotales(facturaDetalles);
+  }, [facturaDetalles]);
+
   const agregarDetalle = () => {
     console.table(detalleNuevo);
     // return;
@@ -33,13 +37,14 @@ const FacturaDetalle = ({ facturaDetalles = [], setFacturaDetalles }) => {
       return;
     }
 
-    setFacturaDetalles([...facturaDetalles, { ...detalleNuevo }]);
+    setFacturaDetalles([...facturaDetalles, { ...detalleNuevo }]);    
     setDetalleNuevo({
       articulo: {codigo : ''},
       cantidad: 1,
       precio: '',
       precioTotal: '',
     });
+    // calcularTotales([...facturaDetalles, { ...detalleNuevo }]);
   };
 
   const handleArticuloAgregarDetalle = (valor) => {
@@ -78,16 +83,17 @@ const FacturaDetalle = ({ facturaDetalles = [], setFacturaDetalles }) => {
     }
 
     setFacturaDetalles(nuevosDetalles);
-    calcularTotales();
+    // calcularTotales(nuevosDetalles);
   };
 
   const eliminarDetalle = (index) => {
     const nuevosDetalles = facturaDetalles.filter((_, i) => i !== index);
     setFacturaDetalles(nuevosDetalles);
+    // calcularTotales(nuevosDetalles);
   };
 
-  const calcularTotales = () => {
-    const stotal = facturaDetalles.reduce((acc, detalle) => acc + detalle.precio * detalle.cantidad
+  const calcularTotales = (detalles) => {
+    const stotal = detalles.reduce((acc, detalle) => acc + detalle.precio * detalle.cantidad
     , 0);
     setSubtotal(stotal);
   }
@@ -221,6 +227,7 @@ const FacturaDetalle = ({ facturaDetalles = [], setFacturaDetalles }) => {
             <td colSpan={2}></td>
             <td className='text-end'>Total</td>
             <td className='text-end'>{subtotal ? subtotal.toFixed(2) : ''}</td>
+            <td></td>
           </tr>
         </tbody>
       </Table>

@@ -1,22 +1,28 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import axios from 'axios';
 
-const Table = () => {
+const Table = ({fechaInicio, fechaFin}) => {
   const [articulos, setArticulos] = useState([]);
   const [clientes, setClientes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const fetchArticulos = async () => {
+  const fetchArticulos = useCallback(async () => {
     try {
-      const response = await axios.get('http://localhost:8080/api/v1/reportes/ventas-cruzadas');
+      const response = await axios.get('http://localhost:8080/api/v1/reportes/ventas-cruzadas', 
+        (fechaInicio && fechaFin) ? {
+        params: {
+          fechaInicio: fechaInicio.toISOString().split('T')[0],
+          fechaFinal: fechaFin.toISOString().split('T')[0]
+        }
+      }:{});
       setArticulos(response.data);
       setLoading(false);
     } catch (error) {
       setError(error);
       setLoading(false);
     }
-  };
+  }, [fechaInicio, fechaFin]);
 
   const fetchClientes = async () => {
     try {
@@ -32,7 +38,7 @@ const Table = () => {
   useEffect(() => {
     fetchArticulos();
     fetchClientes();
-  }, []);
+  }, [fetchArticulos]);
 
 
   if (loading) {

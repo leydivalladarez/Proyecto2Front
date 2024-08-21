@@ -5,7 +5,7 @@ import { Button, Modal } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencil, faTrash } from '@fortawesome/free-solid-svg-icons';
 
-const MotivoTable = () => {
+const MotivoTable = ({ searchTerm }) => {
   const [motivos, setMotivos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -14,14 +14,13 @@ const MotivoTable = () => {
 
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    navigate('/login');
-  };
-
-  const fetchMotivos = async () => {
+  const fetchMotivos = async (searchTerm = '') => {
     try {
-      const response = await axios.get('http://localhost:8080/api/v1/motivos');
+      const response = await axios.get('http://localhost:8080/api/v1/motivos', {
+        params: {
+          buscar: searchTerm,
+        },
+      });
       setMotivos(response.data);
       setLoading(false);
     } catch (error) {
@@ -31,8 +30,8 @@ const MotivoTable = () => {
   };
 
   useEffect(() => {
-    fetchMotivos();
-  }, []);
+    fetchMotivos(searchTerm);
+  }, [searchTerm]);
 
   const handleDelete = async () => {
     try {

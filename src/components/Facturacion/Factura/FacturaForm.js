@@ -11,6 +11,7 @@ const FacturaForm = () => {
     fecha: "",
     cliente: "",
     ciudad: "",
+    facturaDetalles: [],
   });
   const [clientes, setClientes] = useState([]);
   const [ciudades, setCiudades] = useState([]);

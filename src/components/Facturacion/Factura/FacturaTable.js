@@ -5,7 +5,7 @@ import { Button, Modal } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencil, faTrash } from '@fortawesome/free-solid-svg-icons';
 
-const FacturaTable = () => {
+const FacturaTable = ({ searchTerm }) => {
   const [facturas, setFacturas] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -14,9 +14,14 @@ const FacturaTable = () => {
 
   const navigate = useNavigate();
 
-  const fetchFacturas = async () => {
+  const fetchFacturas = async (searchTerm = '') => {
     try {
-      const response = await axios.get('http://localhost:8080/api/v1/facturas');
+      const response = await axios.get('http://localhost:8080/api/v1/facturas', {
+        params: {
+          id: searchTerm,
+          nombre: searchTerm,
+        },
+      });
       setFacturas(response.data);
       setLoading(false);
     } catch (error) {
@@ -26,8 +31,8 @@ const FacturaTable = () => {
   };
 
   useEffect(() => {
-    fetchFacturas();
-  }, []);
+    fetchFacturas(searchTerm);
+  }, [searchTerm]);
 
   const handleDelete = async () => {
     try {
