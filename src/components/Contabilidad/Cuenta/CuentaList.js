@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import Layout from '../../../common/Layout';
-import DepreciacionTable from './Table';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { Button, Col, Form, Row } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAdd, faSearch } from '@fortawesome/free-solid-svg-icons';
+import React, { useState, useEffect  } from "react";
+import { useNavigate, useLocation  } from "react-router-dom";
+import Layout from "../../../common/Layout";
+import CuentaTable from "./CuentaTable";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { Button, Col, Form, Row } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faAdd, faSearch } from "@fortawesome/free-solid-svg-icons";
 
-const DepreciacionList = () => {
+const CuentaList = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [searchTerm, setSearchTerm] = useState("");
@@ -19,12 +19,12 @@ const DepreciacionList = () => {
   }, [location.search]);
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    navigate('/login');
+    localStorage.removeItem("token");
+    navigate("/login");
   };
 
   const handleSearch = () => {
-    navigate(`/activo/depreciaciones?search=${searchTerm}`);
+    navigate(`/contabilidad/cuentas?search=${searchTerm}`);
   };
 
   return (
@@ -33,11 +33,11 @@ const DepreciacionList = () => {
         <Col>
           <Form.Control
             type="text"
-            placeholder="Buscar por Número o Nombre"
+            placeholder="Buscar por Nombre"
             value={searchTerm}
             onChange={(e) => {
               setSearchTerm(e.target.value);
-              navigate(`/activo/depreciaciones?search=${e.target.value}`);
+              navigate(`/contabilidad/cuentas?search=${e.target.value}`);
             }}
           />
         </Col>
@@ -49,15 +49,15 @@ const DepreciacionList = () => {
         <Col className="d-flex justify-content-end">
           <Button
             variant="success"
-            onClick={() => navigate("/activo/depreciaciones/agregar")}
+            onClick={() => navigate("/contabilidad/cuentas/agregar")}
           >
             <FontAwesomeIcon icon={faAdd} /> Agregar
           </Button>
         </Col>
       </Row>
-      <DepreciacionTable searchTerm={searchTerm} />
+      <CuentaTable searchTerm={searchTerm} />
     </Layout>
   );
 };
 
-export default DepreciacionList;
+export default CuentaList;

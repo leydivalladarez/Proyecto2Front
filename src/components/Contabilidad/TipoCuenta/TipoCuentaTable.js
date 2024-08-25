@@ -1,28 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Button, Modal } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencil, faTrash } from '@fortawesome/free-solid-svg-icons';
 
-const Table = ({ searchTerm }) => {
-  const [depreciaciones, setDepreciaciones] = useState([]);
+const TipoCuentaTable = ({searchTerm}) => {
+  const [tipoCuentas, setTipoCuentas] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  const [selectedDepreciacion, setSelectedDepreciacion] = useState(null);
+  const [selectedTipoCuenta, setSelectedTipoCuenta] = useState(null);
 
   const navigate = useNavigate();
 
-  const fetchDepreciaciones = async (searchTerm = '') => {
+  const fetchTipoCuentas = async (searchTerm = '') => {
     try {
-      const response = await axios.get('http://localhost:8080/api/v1/depreciaciones', {
-        params: {
-          numero: searchTerm,
-          responsable: searchTerm,
-        },
+      const response = await axios.get('http://localhost:8080/api/v1/tipoCuentas',{
+        params: { buscar: searchTerm }
       });
-      setDepreciaciones(response.data);
+      setTipoCuentas(response.data);
       setLoading(false);
     } catch (error) {
       setError(error);
@@ -31,13 +28,13 @@ const Table = ({ searchTerm }) => {
   };
 
   useEffect(() => {
-    fetchDepreciaciones(searchTerm);
+    fetchTipoCuentas(searchTerm);
   }, [searchTerm]);
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`http://localhost:8080/api/v1/depreciaciones/${selectedDepreciacion.numero}`);
-      setDepreciaciones(depreciaciones.filter(depreciacion => depreciacion.numero !== selectedDepreciacion.numero));
+      await axios.delete(`http://localhost:8080/api/v1/tipoCuentas/${selectedTipoCuenta.codigo}`);
+      setTipoCuentas(tipoCuentas.filter(tipoCuenta => tipoCuenta.codigo !== selectedTipoCuenta.codigo));
       setShowModal(false);
     } catch (error) {
       setError(error);
@@ -45,8 +42,8 @@ const Table = ({ searchTerm }) => {
     }
   };
 
-  const handleShowModal = (depreciacion) => {
-    setSelectedDepreciacion(depreciacion);
+  const handleShowModal = (tipoCuenta) => {
+    setSelectedTipoCuenta(tipoCuenta);
     setShowModal(true);
   };
 
@@ -63,25 +60,21 @@ const Table = ({ searchTerm }) => {
       <table className="table">
         <thead>
           <tr>
-            <th>Nro</th>
-            <th>Fecha</th>
-            <th>Observaciones</th>
-            <th>Responsable</th>
+            <th>Código</th>
+            <th>Nombre</th>
             <th className='d-flex justify-content-center'>Acciones</th>
           </tr>
         </thead>
         <tbody>
-          {depreciaciones.map(depreciacion => (
-            <tr key={depreciacion.numero}>
-              <td><Link to={`/activo/depreciaciones/editar/${depreciacion.numero}`}>{depreciacion.numero}</Link></td>
-              <td>{depreciacion.fecha}</td>
-              <td>{depreciacion.observaciones}</td>
-              <td>{depreciacion.responsable}</td>
+          {tipoCuentas.map(tipoCuenta => (
+            <tr key={tipoCuenta.codigo}>
+              <td>{tipoCuenta.codigo}</td>
+              <td>{tipoCuenta.nombre}</td>
               <td className='d-flex justify-content-center'>
-                <Button className='mx-1' variant="primary" onClick={() => navigate(`/activo/depreciaciones/editar/${depreciacion.numero}`)}>
+                <Button className='mx-1' variant="primary" onClick={() => navigate(`/contabilidad/tipoCuentas/editar/${tipoCuenta.codigo}`)}>
                   <FontAwesomeIcon icon={faPencil} />
                 </Button>
-                <Button className='mx-1' variant="danger" onClick={() => handleShowModal(depreciacion)}>
+                <Button className='mx-1' variant="danger" onClick={() => handleShowModal(tipoCuenta)}>
                   <FontAwesomeIcon icon={faTrash} />
                 </Button>
               </td>
@@ -95,7 +88,7 @@ const Table = ({ searchTerm }) => {
           <Modal.Title>Confirmar Eliminación</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          ¿Estás seguro de que deseas eliminar depreciacion {selectedDepreciacion?.numero}?
+          ¿Estás seguro de que deseas eliminar a {selectedTipoCuenta?.nombre}?
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setShowModal(false)}>
@@ -110,4 +103,4 @@ const Table = ({ searchTerm }) => {
   );
 };
 
-export default Table;
+export default TipoCuentaTable;

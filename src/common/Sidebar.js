@@ -38,6 +38,11 @@ const Sidebar = () => {
       if (path.startsWith("/facturacion/reportes")) {
         setActiveMenu("invoices-report-collapse");
       }
+    } else if (path.startsWith("/contabilidad")) {
+      setActiveMenu("contabilidad-collapse");
+      if (path.startsWith("/contabilidad/reportes")) {
+        setActiveMenu("contabilidad-report-collapse");
+      }
     } else if (path.startsWith("/profile") || path.startsWith("/settings")) {
       setActiveMenu("account-collapse");
     } else {
@@ -219,17 +224,17 @@ const Sidebar = () => {
         <li className="mb-1">
           <button
             className={`btn btn-toggle d-inline-flex align-items-center rounded border-0 ${
-              activeMenu === "activos-collapse" ? "" : "collapsed"
+              activeMenu && activeMenu.startsWith("activos-") ? "" : "collapsed"
             }`}
             data-bs-toggle="collapse"
             data-bs-target="#activos-collapse"
-            aria-expanded={activeMenu === "activos-collapse"}
+            aria-expanded={activeMenu && activeMenu.startsWith("activos-")}
           >
             Activos
           </button>
           <div
             className={`collapse ${
-              activeMenu === "activos-collapse" ? "show" : ""
+              activeMenu && activeMenu.startsWith("activos-") ? "show" : ""
             }`}
             id="activos-collapse"
           >
@@ -292,52 +297,72 @@ const Sidebar = () => {
         <li className="mb-1">
           <button
             className={`btn btn-toggle d-inline-flex align-items-center rounded border-0 ${
-              activeMenu === "orders-collapse" ? "" : "collapsed"
+              activeMenu && activeMenu.startsWith("contabilidad-") ? "" : "collapsed"
             }`}
             data-bs-toggle="collapse"
-            data-bs-target="#orders-collapse"
-            aria-expanded={activeMenu === "orders-collapse"}
+            data-bs-target="#contabilidad-collapse"
+            aria-expanded={activeMenu && activeMenu.startsWith("contabilidad-")}
           >
             Contabilidad
           </button>
           <div
             className={`collapse ${
-              activeMenu === "orders-collapse" ? "show" : ""
+              activeMenu && activeMenu.startsWith("contabilidad-") ? "show" : ""
             }`}
-            id="orders-collapse"
+            id="contabilidad-collapse"
           >
             <ul className="btn-toggle-nav list-unstyled fw-normal pb-1 small">
               <li>
                 <NavLink
-                  to="/new"
+                  to="/contabilidad/tipoCuentas"
                   className="link-body-emphasis d-inline-flex text-decoration-none rounded"
                 >
-                  New
+                  Tipo de Cuentas
                 </NavLink>
               </li>
               <li>
                 <NavLink
-                  to="/processed"
+                  to="/contabilidad/cuentas"
                   className="link-body-emphasis d-inline-flex text-decoration-none rounded"
                 >
-                  Processed
+                  Cuentas
                 </NavLink>
               </li>
               <li>
                 <NavLink
-                  to="/shipped"
+                  to="/contabilidad/comprobantesContabilidad"
                   className="link-body-emphasis d-inline-flex text-decoration-none rounded"
                 >
-                  Shipped
+                  Comprobantes
                 </NavLink>
               </li>
-              <li>
-                <NavLink
-                  to="/returned"
-                  className="link-body-emphasis d-inline-flex text-decoration-none rounded"
+              <li className="mb-1 ms-3">
+                <button
+                  className={`btn btn-toggle d-inline-flex align-items-center rounded border-0 ${
+                    activeMenu === "contabilidad-report-collapse" ? "" : "collapsed"
+                  }`}
+                  data-bs-toggle="collapse"
+                  data-bs-target="#contabilidad-report-collapse"
+                  aria-expanded={activeMenu === "contabilidad-report-collapse"}
                 >
-                  Returned
-                </NavLink>
+                  Reportes
+                </button>
+                <div
+                  className={`collapse ${
+                    activeMenu === "contabilidad-report-collapse" ? "show" : ""
+                  }`}
+                  id="contabilidad-report-collapse"
+                >
+                  <li>
+                    <NavLink
+                      to="/contabilidad/reportes/balance-general"
+                      className="link-body-emphasis d-inline-flex text-decoration-none rounded"
+                    >
+                      Balance General
+                    </NavLink>
+                  </li>
+                  <li><NavLink to="/contabilidad/reportes/estado-resultados" className="link-body-emphasis d-inline-flex text-decoration-none rounded">Estado Resultados</NavLink></li>
+                </div>
               </li>
             </ul>
           </div>

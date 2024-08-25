@@ -25,6 +25,14 @@ import ActivoForm from './Activo/Activo/ActivoForm';
 import DepreciacionList from './Activo/Depreciacion/DepreciacionList';
 import DepreciacionForm from './Activo/Depreciacion/DepreciacionForm';
 import ReporteDepreciacion from './Activo/Reportes/ReporteDepreciacion';
+import TipoCuentaList from './Contabilidad/TipoCuenta/TipoCuentaList';
+import TipoCuentaForm from './Contabilidad/TipoCuenta/TipoCuentaForm';
+import CuentaList from './Contabilidad/Cuenta/CuentaList';
+import CuentaForm from './Contabilidad/Cuenta/CuentaForm';
+import ComprobanteContabilidadList from './Contabilidad/ComprobanteContabilidad/ComprobanteContabilidadList';
+import ComprobanteContabilidadForm from './Contabilidad/ComprobanteContabilidad/ComprobanteContabilidadForm';
+import Balance from './Contabilidad/Reportes/Balance';
+import Resultados from './Contabilidad/Reportes/Resultados';
 
 const AppRoutes = ({ isAuthenticated }) => {
   return (
@@ -87,6 +95,22 @@ const AppRoutes = ({ isAuthenticated }) => {
       <Route path="/activo/depreciaciones/editar/:numero" element={<DepreciacionForm />} />
 
       <Route path="/activo/reportes/reporte-depreciacion" element={<ReporteDepreciacion />} />
+
+      {/* Contabilidad */}
+      <Route path="/contabilidad/tipoCuentas" element={<TipoCuentaList />} />
+      <Route path="/contabilidad/tipoCuentas/agregar" element={<TipoCuentaForm />} />
+      <Route path="/contabilidad/tipoCuentas/editar/:codigo" element={<TipoCuentaForm />} />
+
+      <Route path="/contabilidad/cuentas" element={<CuentaList />} />
+      <Route path="/contabilidad/cuentas/agregar" element={<CuentaForm />} />
+      <Route path="/contabilidad/cuentas/editar/:codigo" element={<CuentaForm />} />
+
+      <Route path="/contabilidad/comprobantesContabilidad" element={<ComprobanteContabilidadList />} />
+      <Route path="/contabilidad/comprobantesContabilidad/agregar" element={<ComprobanteContabilidadForm />} />
+      <Route path="/contabilidad/comprobantesContabilidad/editar/:numero" element={<ComprobanteContabilidadForm />} />
+
+      <Route path="/contabilidad/reportes/balance-general" element={<Balance />} />
+      <Route path="/contabilidad/reportes/estado-resultados" element={<Resultados />} />
 
       <Route path="/" element={<Navigate to="/login" />} />
     </Routes>

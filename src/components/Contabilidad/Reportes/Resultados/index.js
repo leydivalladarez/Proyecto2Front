@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Layout from '../../../../common/Layout';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button, Col, Form, Row } from 'react-bootstrap';
-import Table from './Table';
-import CustomDatePicker from "../../../../common/Custom-Datepicker";
+import ResultadosTable from './Table';
+import CustomDatePicker from '../../../../common/Custom-Datepicker';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import ReportePdf from './ReportePdf';
 
-const ReporteDepreciacion = () => {
+const Resultados = () => {
   const [fechaInicio, setFechaInicio] = useState(null);
   const [fechaFin, setFechaFin] = useState(null);
-  const [fetchTrigger, setFetchTrigger] = useState(false); // Estado para manejar la búsqueda
+  const [fetchTrigger, setFetchTrigger] = useState(false);
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -45,25 +46,24 @@ const ReporteDepreciacion = () => {
             />
           </Form.Group>
         </Col>
-        <Col>
-          <br />
+        <Col >
           <Button 
             onClick={handleSearch} 
             variant="primary"
             className='me-3'
           >
             Buscar
-          </Button>
-          <PDFDownloadLink document={<ReportePdf fechaInicio={fechaInicio} fechaFin={fechaFin} />} fileName='Reporte Depreciación.pdf'>
+          </Button>          
+          {/* <PDFDownloadLink document={<ReportePdf fechaInicio={fechaInicio} fechaFin={fechaFin} />} fileName='VentaCruzada.pdf'>
             {({loading})=>
               loading ? <button className='btn btn-primary'>Cargando...</button> : <button className='btn btn-primary'>Descargar</button>
             }
-          </PDFDownloadLink>
+          </PDFDownloadLink> */}
         </Col>
       </Row>
-      <Table fechaInicio={fechaInicio} fechaFin={fechaFin} fetchTrigger={fetchTrigger} />
+      <ResultadosTable fechaInicio={fechaInicio} fechaFin={fechaFin} fetchTrigger={fetchTrigger} />
     </Layout>
   );
 };
 
-export default ReporteDepreciacion;
+export default Resultados;

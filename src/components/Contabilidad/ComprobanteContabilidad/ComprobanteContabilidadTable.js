@@ -5,24 +5,24 @@ import { Button, Modal } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPencil, faTrash } from '@fortawesome/free-solid-svg-icons';
 
-const Table = ({ searchTerm }) => {
-  const [depreciaciones, setDepreciaciones] = useState([]);
+const ComprobanteContabilidadTable = ({ searchTerm }) => {
+  const [comprobantesContabilidad, setComprobantesContabilidad] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  const [selectedDepreciacion, setSelectedDepreciacion] = useState(null);
+  const [selectedComprobanteContabilidad, setSelectedComprobanteContabilidad] = useState(null);
 
   const navigate = useNavigate();
 
-  const fetchDepreciaciones = async (searchTerm = '') => {
+  const fetchComprobantesContabilidad = async (searchTerm = '') => {
     try {
-      const response = await axios.get('http://localhost:8080/api/v1/depreciaciones', {
+      const response = await axios.get('http://localhost:8080/api/v1/comprobantesContabilidad', {
         params: {
           numero: searchTerm,
-          responsable: searchTerm,
+          // fecha: searchTerm,
         },
       });
-      setDepreciaciones(response.data);
+      setComprobantesContabilidad(response.data);
       setLoading(false);
     } catch (error) {
       setError(error);
@@ -31,13 +31,13 @@ const Table = ({ searchTerm }) => {
   };
 
   useEffect(() => {
-    fetchDepreciaciones(searchTerm);
+    fetchComprobantesContabilidad(searchTerm);
   }, [searchTerm]);
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`http://localhost:8080/api/v1/depreciaciones/${selectedDepreciacion.numero}`);
-      setDepreciaciones(depreciaciones.filter(depreciacion => depreciacion.numero !== selectedDepreciacion.numero));
+      await axios.delete(`http://localhost:8080/api/v1/comprobantesContabilidad/${selectedComprobanteContabilidad.numero}`);
+      setComprobantesContabilidad(comprobantesContabilidad.filter(comprobanteContabilidad => comprobanteContabilidad.numero !== selectedComprobanteContabilidad.numero));
       setShowModal(false);
     } catch (error) {
       setError(error);
@@ -45,8 +45,8 @@ const Table = ({ searchTerm }) => {
     }
   };
 
-  const handleShowModal = (depreciacion) => {
-    setSelectedDepreciacion(depreciacion);
+  const handleShowModal = (comprobanteContabilidad) => {
+    setSelectedComprobanteContabilidad(comprobanteContabilidad);
     setShowModal(true);
   };
 
@@ -66,22 +66,20 @@ const Table = ({ searchTerm }) => {
             <th>Nro</th>
             <th>Fecha</th>
             <th>Observaciones</th>
-            <th>Responsable</th>
             <th className='d-flex justify-content-center'>Acciones</th>
           </tr>
         </thead>
         <tbody>
-          {depreciaciones.map(depreciacion => (
-            <tr key={depreciacion.numero}>
-              <td><Link to={`/activo/depreciaciones/editar/${depreciacion.numero}`}>{depreciacion.numero}</Link></td>
-              <td>{depreciacion.fecha}</td>
-              <td>{depreciacion.observaciones}</td>
-              <td>{depreciacion.responsable}</td>
+          {comprobantesContabilidad.map(comprobanteContabilidad => (
+            <tr key={comprobanteContabilidad.numero}>
+              <td><Link to={`/contabilidad/comprobantesContabilidad/editar/${comprobanteContabilidad.numero}`}>{comprobanteContabilidad.numero}</Link></td>
+              <td>{comprobanteContabilidad.fecha}</td>
+              <td>{comprobanteContabilidad.observaciones}</td>
               <td className='d-flex justify-content-center'>
-                <Button className='mx-1' variant="primary" onClick={() => navigate(`/activo/depreciaciones/editar/${depreciacion.numero}`)}>
+                <Button className='mx-1' variant="primary" onClick={() => navigate(`/contabilidad/comprobantesContabilidad/editar/${comprobanteContabilidad.numero}`)}>
                   <FontAwesomeIcon icon={faPencil} />
                 </Button>
-                <Button className='mx-1' variant="danger" onClick={() => handleShowModal(depreciacion)}>
+                <Button className='mx-1' variant="danger" onClick={() => handleShowModal(comprobanteContabilidad)}>
                   <FontAwesomeIcon icon={faTrash} />
                 </Button>
               </td>
@@ -95,7 +93,7 @@ const Table = ({ searchTerm }) => {
           <Modal.Title>Confirmar Eliminación</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          ¿Estás seguro de que deseas eliminar depreciacion {selectedDepreciacion?.numero}?
+          ¿Estás seguro de que deseas eliminar comprobanteContabilidad {selectedComprobanteContabilidad?.numero}?
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setShowModal(false)}>
@@ -110,4 +108,4 @@ const Table = ({ searchTerm }) => {
   );
 };
 
-export default Table;
+export default ComprobanteContabilidadTable;

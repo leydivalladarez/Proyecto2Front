@@ -40,6 +40,10 @@ const Table = ({ fechaInicio, fechaFin, fetchTrigger }) => {
     return <p>Error al cargar los datos: {error.message}</p>;
   }
 
+  if(depreciaciones.length === 0){
+    return <p>No hay datos disponibles para la fecha seleccionada.</p>;  // Mostrar mensaje cuando no hay datos
+  }
+
   return (
     <div className="d-flex">
       <table className="table table-striped">
