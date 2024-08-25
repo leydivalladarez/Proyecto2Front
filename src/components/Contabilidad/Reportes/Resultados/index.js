@@ -54,11 +54,11 @@ const Resultados = () => {
           >
             Buscar
           </Button>          
-          {/* <PDFDownloadLink document={<ReportePdf fechaInicio={fechaInicio} fechaFin={fechaFin} />} fileName='VentaCruzada.pdf'>
+          <PDFDownloadLink document={<ReportePdf fechaInicio={fechaInicio} fechaFin={fechaFin} />} fileName='Estado Resultados.pdf'>
             {({loading})=>
               loading ? <button className='btn btn-primary'>Cargando...</button> : <button className='btn btn-primary'>Descargar</button>
             }
-          </PDFDownloadLink> */}
+          </PDFDownloadLink>
         </Col>
       </Row>
       <ResultadosTable fechaInicio={fechaInicio} fechaFin={fechaFin} fetchTrigger={fetchTrigger} />

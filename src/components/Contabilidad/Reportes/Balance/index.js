@@ -54,11 +54,11 @@ const Balance = () => {
           >
             Buscar
           </Button>          
-          {/* <PDFDownloadLink document={<ReportePdf fechaInicio={fechaInicio} fechaFin={fechaFin} />} fileName='VentaCruzada.pdf'>
+          <PDFDownloadLink document={<ReportePdf fechaInicio={fechaInicio} fechaFin={fechaFin} />} fileName='Balance General.pdf'>
             {({loading})=>
               loading ? <button className='btn btn-primary'>Cargando...</button> : <button className='btn btn-primary'>Descargar</button>
             }
-          </PDFDownloadLink> */}
+          </PDFDownloadLink>
         </Col>
       </Row>
       <BalanceTable fechaInicio={fechaInicio} fechaFin={fechaFin} fetchTrigger={fetchTrigger} />
