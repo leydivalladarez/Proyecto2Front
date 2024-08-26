@@ -1,42 +1,35 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 
 const ChatWidget = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
+  const [socket, setSocket] = useState(null);
 
   useEffect(() => {
-    const source = new EventSource('http://localhost:8080/chat');
+    const ws = new WebSocket('ws://localhost:8080/chat');
 
-    source.onmessage = (event) => {
+    ws.onmessage = (event) => {
       setMessages((prevMessages) => [...prevMessages, event.data]);
     };
 
-    source.onerror = (err) => {
-      console.error('EventSource failed:', err);
-      source.close();
+    ws.onerror = (err) => {
+      console.error('WebSocket error:', err);
     };
 
+    setSocket(ws);
+
     return () => {
-      if (source) {
-        source.close();
+      if (ws) {
+        ws.close();
       }
     };
   }, []);
 
-  const handleSendMessage = async () => {
-    if (newMessage.trim()) {
-      try {
-        await axios.post(
-          'http://localhost:8080/sendMessage',
-          new URLSearchParams({ message: newMessage }),
-          { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }
-        );
-        setNewMessage(''); // Limpiar el campo de entrada
-      } catch (error) {
-        console.error('Error sending message', error);
-      }
+  const handleSendMessage = () => {
+    if (newMessage.trim() && socket) {
+      socket.send(newMessage);
+      setNewMessage(''); // Limpiar el campo de entrada
     }
   };
 

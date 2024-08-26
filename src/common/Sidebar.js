@@ -387,7 +387,7 @@ const Sidebar = () => {
             id="account-collapse"
           >
             <ul className="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-              <li>
+              {/* <li>
                 <NavLink
                   to="/new"
                   className="link-body-emphasis d-inline-flex text-decoration-none rounded"
@@ -410,7 +410,7 @@ const Sidebar = () => {
                 >
                   Settings
                 </NavLink>
-              </li>
+              </li> */}
               <li>
                 <Button
                   onClick={handleLogout}

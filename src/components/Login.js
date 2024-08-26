@@ -7,35 +7,32 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
- 
   const handleLogin = async (e) => {
     e.preventDefault();
     console.log('Attempting login with:', { username, password }); // Log antes de enviar la solicitud
 
     try {
-      const formData = new URLSearchParams();
-      formData.append('username', username);
-      formData.append('password', password);
+      const response = await axios.post('http://localhost:8080/login', 
+        { username, password }, // Enviar los datos como JSON
+        { headers: { 'Content-Type': 'application/json' } } // Encabezado para indicar que el contenido es JSON
+      );
 
-      const response = await axios.post('http://localhost:8080/login', formData, {
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        withCredentials: true,
-      });
+      console.log('Login response:', response.data); // Log de la respuesta del servidor
 
-      console.log('Login response:', response); // Log de la respuesta del servidor
-
-      if (response.status === 200) {
-        localStorage.setItem('token', 'dummy-token');
-        navigate('/dashboard');
+      if (response.data.success) {
+        localStorage.setItem('token', 'dummy-token'); // Puedes ajustar el valor del token según sea necesario
+        navigate('/dashboard'); // Redirige a la página del dashboard
+      } else {
+        alert(response.data.message); // Muestra el mensaje de error del backend
       }
     } catch (error) {
       console.error('Error durante el login', error); // Log de cualquier error
-      alert('Login fallido. Revisa tus credenciales.');
+      alert('Login fallido. Revisa tus credenciales.'); // Mensaje de error genérico
     }
   };
 
   const handleOAuth2Login = () => {
-    window.location.href = 'http://localhost:8080/oauth2callback';
+    window.location.href = 'http://localhost:8080/oauth2/authorization/google';
   };
 
   return (
@@ -71,7 +68,7 @@ const Login = () => {
         </form>
         <hr />
         <button onClick={handleOAuth2Login} className="btn btn-secondary w-100 mt-3">
-          Login with Google
+          Iniciar Sesión con Google
         </button>
       </div>
     </div>

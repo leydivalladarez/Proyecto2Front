@@ -7,9 +7,9 @@ import { Toggle } from './ToggleTheme';
 const Header = ({ onLogout }) => {
   return (
     <header className="navbar navbar-expand-lg ">
-      <a className="navbar-brand" href="#">Contabilidad Dashboard</a>
+      <a className="navbar-brand" href="/dashboard">Contabilidad Dashboard</a>
       <Toggle />
-      <button onClick={onLogout} className="btn btn-danger ms-auto">Logout</button>
+      <button onClick={onLogout} className="btn btn-danger ms-auto">Cerrar Sesión</button>
     </header>
   );
 };
